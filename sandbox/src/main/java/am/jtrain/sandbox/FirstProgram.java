@@ -1,4 +1,4 @@
-package am.jtrain;
+package am.jtrain.sandbox;
 
 public class FirstProgram {
 	
