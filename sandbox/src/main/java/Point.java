@@ -4,9 +4,8 @@ public class Point {
     double y = 0;
 
     public static double distance(Point p1, Point p2) {
-        double l = 0;
-        l = Math.sqrt(Math.pow((p2.x-p1.x),2) + Math.pow((p2.y-p1.y),2));
-        return l;
+
+        return(Math.sqrt(Math.pow((p2.x-p1.x),2) + Math.pow((p2.y-p1.y),2)));
     }
 
     public static void main(String[] args) {
@@ -27,20 +26,17 @@ public class Point {
         p4.x = 0;
         p4.y = 3;
 
-        double res1 = 0;
-        res1 = distance(p1, p2);
+
+        double res1 = distance(p1, p2);
         System.out.println(res1);
 
-        double res2 = 0;
-        res2 = distance(p1, p3);
+        double res2 = distance(p1, p3);
         System.out.println(res2);
 
-        double res3 = 0;
-        res3 = distance(p1, p4);
+        double res3 = distance(p1, p4);
         System.out.println(res3);
 
-        double res4 = 0;
-        res4 = distance(p2, p3);
+        double res4 = distance(p2, p3);
         System.out.println(res4);
     }
 }
