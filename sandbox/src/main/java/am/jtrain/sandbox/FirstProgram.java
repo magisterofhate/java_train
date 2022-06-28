@@ -11,9 +11,9 @@ public class FirstProgram {
 		Point p4 = new Point(4, 18);
 
 		System.out.println("Расстояние между точками (" + p1.x + ";" + p1.y + ")" + " и (" + p2.x + ";" + p2.y + ")"
-				+ " равняется " + Point.distance(p1, p2));
+				+ " равняется " + p1.distance(p2));
 
 		System.out.println("Расстояние между точками (" + p3.x + ";" + p3.y + ")" + " и (" + p4.x + ";" + p4.y + ")"
-				+ " равняется " + Point.distance(p3, p4));
+				+ " равняется " + p3.distance(p4));
 	}
 }

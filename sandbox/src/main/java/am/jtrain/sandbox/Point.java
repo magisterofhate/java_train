@@ -9,9 +9,10 @@ public class Point {
         x = a;
         y = b;
     }
-    public static double distance(Point p1, Point p2) {
+    // Применяется к объекту класса. Вычисляет расстояние от объекта до указанной в качестве параметра точки
+    public double distance(Point p) {
 
-        return(Math.sqrt(Math.pow((p2.x-p1.x),2) + Math.pow((p2.y-p1.y),2)));
+        return(Math.sqrt(Math.pow((this.x-p.x),2) + Math.pow((this.y-p.y),2)));
     }
 
 }
