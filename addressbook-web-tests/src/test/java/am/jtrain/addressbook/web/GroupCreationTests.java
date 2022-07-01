@@ -33,16 +33,12 @@ public class GroupCreationTests {
         initGroupCreation();
         fillGorupForm(new GroupData("group_1", "group_test 1", "group footer 1"));
         submitGroupCreation();
+        returnToGroupPage();
         logout();
     }
 
-    private void logout() {
-        returnToGroupPage();
-        wd.findElement(By.linkText("Logout")).click();
-    }
-
-    private void returnToGroupPage() {
-        wd.findElement(By.linkText("group page")).click();
+    private void goToGroupPage() {
+        wd.findElement(By.linkText("groups")).click();
     }
 
     private void initGroupCreation() {
@@ -50,11 +46,8 @@ public class GroupCreationTests {
     }
 
     private void fillGorupForm(GroupData groupData) {
-        wd.findElement(By.name("group_name")).clear();
         wd.findElement(By.name("group_name")).sendKeys(groupData.getName());
-        wd.findElement(By.name("group_header")).clear();
         wd.findElement(By.name("group_header")).sendKeys(groupData.getHeader());
-        wd.findElement(By.name("group_footer")).clear();
         wd.findElement(By.name("group_footer")).sendKeys(groupData.getFooter());
     }
 
@@ -62,8 +55,12 @@ public class GroupCreationTests {
         wd.findElement(By.name("submit")).click();
     }
 
-    private void goToGroupPage() {
-        wd.findElement(By.linkText("groups")).click();
+    private void returnToGroupPage() {
+        wd.findElement(By.linkText("group page")).click();
+    }
+
+    private void logout() {
+        wd.findElement(By.linkText("Logout")).click();
     }
 
     @AfterMethod(alwaysRun = true)
