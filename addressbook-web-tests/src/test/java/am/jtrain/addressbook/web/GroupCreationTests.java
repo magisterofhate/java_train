@@ -14,16 +14,16 @@ public class GroupCreationTests {
         System.setProperty("webdriver.chrome.driver", "C:\\Windows\\System32\\chromedriver.exe");
         wd = new ChromeDriver();
         wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
-        login();
+        login("admin", "secret");
     }
 
-    private void login() {
+    private void login(String username, String password) {
         wd.get("http://localhost/addressbook/");
         wd.findElement(By.id("LoginForm")).click();
         wd.findElement(By.name("user")).clear();
-        wd.findElement(By.name("user")).sendKeys("admin");
+        wd.findElement(By.name("user")).sendKeys(username);
         wd.findElement(By.name("pass")).clear();
-        wd.findElement(By.name("pass")).sendKeys("secret");
+        wd.findElement(By.name("pass")).sendKeys(password);
         wd.findElement(By.xpath("//input[@value='Login']")).click();
     }
 
@@ -31,7 +31,7 @@ public class GroupCreationTests {
     public void testGroupCreation() {
         goToGroupPage();
         initGroupCreation();
-        fillGorupForm();
+        fillGorupForm(new GroupData("group_1", "group_test 1", "group footer 1"));
         submitGroupCreation();
         logout();
     }
@@ -49,13 +49,13 @@ public class GroupCreationTests {
         wd.findElement(By.name("new")).click();
     }
 
-    private void fillGorupForm() {
+    private void fillGorupForm(GroupData groupData) {
         wd.findElement(By.name("group_name")).clear();
-        wd.findElement(By.name("group_name")).sendKeys("group_1");
+        wd.findElement(By.name("group_name")).sendKeys(groupData.getName());
         wd.findElement(By.name("group_header")).clear();
-        wd.findElement(By.name("group_header")).sendKeys("group_test 1");
+        wd.findElement(By.name("group_header")).sendKeys(groupData.getHeader());
         wd.findElement(By.name("group_footer")).clear();
-        wd.findElement(By.name("group_footer")).sendKeys("group footer 1");
+        wd.findElement(By.name("group_footer")).sendKeys(groupData.getFooter());
     }
 
     private void submitGroupCreation() {
