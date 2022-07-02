@@ -1,7 +1,6 @@
 package am.jtrain.addressbook.web.appManager;
 
 import am.jtrain.addressbook.web.model.ContactData;
-import am.jtrain.addressbook.web.model.GroupData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchElementException;
@@ -11,12 +10,16 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import java.time.Duration;
 
 public class ApplicationManager {
+
     WebDriver wd;
+
+    private GroupHelper groupHelper;
 
     public void init() {
         System.setProperty("webdriver.chrome.driver", "C:\\Windows\\System32\\chromedriver.exe");
         wd = new ChromeDriver();
         wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+        groupHelper = new GroupHelper(wd);
         login("admin", "secret");
     }
 
@@ -32,24 +35,6 @@ public class ApplicationManager {
 
     public void goToGroupPage() {
         wd.findElement(By.linkText("groups")).click();
-    }
-
-    public void initGroupCreation() {
-        wd.findElement(By.name("new")).click();
-    }
-
-    public void fillGorupForm(GroupData groupData) {
-        wd.findElement(By.name("group_name")).sendKeys(groupData.getName());
-        wd.findElement(By.name("group_header")).sendKeys(groupData.getHeader());
-        wd.findElement(By.name("group_footer")).sendKeys(groupData.getFooter());
-    }
-
-    public void submitGroupCreation() {
-        wd.findElement(By.name("submit")).click();
-    }
-
-    public void returnToGroupPage() {
-        wd.findElement(By.linkText("group page")).click();
     }
 
     public void logout() {
@@ -105,5 +90,9 @@ public class ApplicationManager {
         } catch (NoAlertPresentException e) {
             return false;
         }
+    }
+
+    public GroupHelper getGroupHelper() {
+        return groupHelper;
     }
 }
