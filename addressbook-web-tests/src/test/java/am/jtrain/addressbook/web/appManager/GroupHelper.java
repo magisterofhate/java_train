@@ -14,7 +14,7 @@ public class GroupHelper extends HelperBase {
         clickElement(By.name("new"));
     }
 
-    public void fillGorupForm(GroupData groupData) {
+    public void fillGroupForm(GroupData groupData) {
         enterText(By.name("group_name"), groupData.getName());
         enterText(By.name("group_header"), groupData.getHeader());
         enterText(By.name("group_footer"), groupData.getFooter());
@@ -26,5 +26,17 @@ public class GroupHelper extends HelperBase {
 
     public void returnToGroupPage() {
         clickElement(By.linkText("group page"));
+    }
+
+    public void selectGroup() {
+        clickElement(By.name("selected[]"));
+    }
+
+    public void initGroupModification() {
+        clickElement(By.xpath("//input[@name='edit']"));
+    }
+
+    public void submitGroupModification() {
+        clickElement(By.name("update"));
     }
 }
