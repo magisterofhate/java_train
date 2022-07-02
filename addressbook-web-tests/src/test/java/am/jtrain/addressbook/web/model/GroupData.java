@@ -1,4 +1,4 @@
-package am.jtrain.addressbook.web;
+package am.jtrain.addressbook.web.model;
 
 public class GroupData {
     private final String name;
