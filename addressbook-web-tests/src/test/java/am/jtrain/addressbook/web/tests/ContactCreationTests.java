@@ -14,7 +14,7 @@ public class ContactCreationTests extends TestBase {
                         "+551428973", "one.email@test.org", "other.mail@test.school"));
         app.getContactHelper().submitContactCreation();
         app.getContactHelper().returnToContactPage();
-        app.logout();
+        app.getSessionHelper().logout();
     }
 
 }

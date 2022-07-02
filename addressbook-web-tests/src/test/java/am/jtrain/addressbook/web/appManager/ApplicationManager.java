@@ -14,6 +14,7 @@ public class ApplicationManager {
 
     private GroupHelper groupHelper;
     private ContactHelper contactHelper;
+    private SessionHelper sessionHelper;
 
     public void init() {
         System.setProperty("webdriver.chrome.driver", "C:\\Windows\\System32\\chromedriver.exe");
@@ -21,25 +22,12 @@ public class ApplicationManager {
         wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
         groupHelper = new GroupHelper(wd);
         contactHelper = new ContactHelper(wd);
-        login("admin", "secret");
-    }
-
-    private void login(String username, String password) {
-        wd.get("http://localhost/addressbook/");
-        wd.findElement(By.id("LoginForm")).click();
-        wd.findElement(By.name("user")).clear();
-        wd.findElement(By.name("user")).sendKeys(username);
-        wd.findElement(By.name("pass")).clear();
-        wd.findElement(By.name("pass")).sendKeys(password);
-        wd.findElement(By.xpath("//input[@value='Login']")).click();
+        sessionHelper = new SessionHelper(wd);
+        sessionHelper.login("admin", "secret");
     }
 
     public void goToGroupPage() {
         wd.findElement(By.linkText("groups")).click();
-    }
-
-    public void logout() {
-        wd.findElement(By.linkText("Logout")).click();
     }
 
     public void goToContactPage() {
@@ -74,5 +62,9 @@ public class ApplicationManager {
 
     public ContactHelper getContactHelper() {
         return contactHelper;
+    }
+
+    public SessionHelper getSessionHelper() {
+        return sessionHelper;
     }
 }
