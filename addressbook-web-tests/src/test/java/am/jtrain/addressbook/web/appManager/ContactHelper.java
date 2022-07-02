@@ -35,4 +35,24 @@ public class ContactHelper extends HelperBase {
         clickElement(By.name("submit"));
     }
 
+    public void selectContactForDeletion() {
+        clickElement(By.name("selected[]"));
+    }
+
+    public void submitContactDeletion() {
+        clickElement(By.xpath("//input[@value='Delete']"));
+        wd.switchTo().alert().accept();
+    }
+
+    public void initContactModification() {
+        clickElement(By.xpath("//a[@href='edit.php?id=1']"));
+    }
+
+    public void submitContactModification() {
+        clickElement(By.name("update"));
+    }
+
+    public void deleteContactFromModificationForm() {
+        clickElement(By.xpath("//input[@value='Delete']"));
+    }
 }
