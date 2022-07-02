@@ -3,18 +3,18 @@ package am.jtrain.addressbook.web.appManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class NavigationHelper {
-    WebDriver wd;
+public class NavigationHelper extends HelperBase {
+    private WebDriver wd;
 
     public NavigationHelper(WebDriver wd) {
-        this.wd = wd;
+        super(wd);
     }
 
     public void goToGroupPage() {
-        wd.findElement(By.linkText("groups")).click();
+        clickElement(By.linkText("groups"));
     }
 
     public void goToContactPage() {
-        wd.findElement(By.linkText("home")).click();
+        clickElement(By.linkText("home"));
     }
 }

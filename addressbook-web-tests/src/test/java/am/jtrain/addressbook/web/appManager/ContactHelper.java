@@ -4,35 +4,35 @@ import am.jtrain.addressbook.web.model.ContactData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class ContactHelper {
-    WebDriver wd;
+public class ContactHelper extends HelperBase {
 
     public ContactHelper(WebDriver wd) {
-        this.wd = wd;
+        super(wd);
     }
 
     public void returnToContactPage() {
-        wd.findElement(By.linkText("home page")).click();
+        clickElement(By.linkText("home page"));
     }
 
     public void initContactCreation() {
-        wd.findElement(By.xpath("//a[@href='edit.php']")).click();
+        clickElement(By.xpath("//a[@href='edit.php']"));
     }
 
     public void fillContactForm(ContactData contactData) {
-        wd.findElement(By.name("firstname")).sendKeys(contactData.getFirstname());
-        wd.findElement(By.name("lastname")).sendKeys(contactData.getLastname());
-        wd.findElement(By.name("middlename")).sendKeys(contactData.getMiddlename());
-        wd.findElement(By.name("address")).sendKeys(contactData.getAddress());
-        wd.findElement(By.name("home")).sendKeys(contactData.getHome());
-        wd.findElement(By.name("mobile")).sendKeys(contactData.getMobile());
-        wd.findElement(By.name("phone2")).sendKeys(contactData.getPhone2());
-        wd.findElement(By.name("email")).sendKeys(contactData.getEmail());
-        wd.findElement(By.name("email2")).sendKeys(contactData.getEmail2());
+        enterText(By.name("firstname"),contactData.getFirstname());
+        enterText(By.name("lastname"),contactData.getLastname());
+        enterText(By.name("middlename"),contactData.getMiddlename());
+        enterText(By.name("address"),contactData.getAddress());
+        enterText(By.name("home"),contactData.getHome());
+        enterText(By.name("mobile"),contactData.getMobile());
+        enterText(By.name("phone2"),contactData.getPhone2());
+        enterText(By.name("email"),contactData.getEmail());
+        enterText(By.name("email2"),contactData.getEmail2());
 
     }
 
     public void submitContactCreation() {
-        wd.findElement(By.name("submit")).click();
+        clickElement(By.name("submit"));
     }
+
 }
