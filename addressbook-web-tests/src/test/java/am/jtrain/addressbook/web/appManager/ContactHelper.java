@@ -45,7 +45,8 @@ public class ContactHelper extends HelperBase {
     }
 
     public void initContactModification() {
-        clickElement(By.xpath("//a[@href='edit.php?id=1']"));
+        String c_id = wd.findElement(By.xpath("//input[@name='selected[]']")).getAttribute("value");
+        clickElement(By.xpath("//a[@href='edit.php?id=" + c_id + "']"));
     }
 
     public void submitContactModification() {
@@ -59,4 +60,12 @@ public class ContactHelper extends HelperBase {
     public boolean isContactsPresented (){
         return isElementPresent(By.xpath("//input[@name='selected[]']"));
     }
+
+    public void createContact(ContactData c_data) {
+        initContactCreation();
+        fillContactForm(c_data);
+        submitContactCreation();
+        returnToContactPage();
+    }
+
 }

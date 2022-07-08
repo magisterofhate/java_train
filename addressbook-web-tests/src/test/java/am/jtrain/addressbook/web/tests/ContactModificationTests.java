@@ -8,6 +8,10 @@ public class ContactModificationTests extends TestBase{
     @Test
     public void testContactModification() {
         app.getNavigationHelper().goToContactPage();
+        if (! app.getContactHelper().isContactsPresented()) {
+            app.getContactHelper().createContact(new ContactData("Firstname 123", "Lastname 123",
+                    null, null, null, null, null, null, null));
+        }
         app.getContactHelper().initContactModification();
         app.getContactHelper().fillContactForm(new ContactData("Firstname 123", "Lastname 123", "Middlename",
                 "address number one two three", "+4456789123", "+3378912367",
