@@ -2,6 +2,12 @@ package am.jtrain.addressbook.web.appManager;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.remote.Browser;
 
 import java.time.Duration;
 
@@ -12,10 +18,32 @@ public class ApplicationManager {
     private GroupHelper groupHelper;
     private ContactHelper contactHelper;
     private SessionHelper sessionHelper;
+    private final Browser browser;
+
+    public ApplicationManager (Browser browser) {
+        this.browser = browser;
+    }
 
     public void init() {
-        wd = new ChromeDriver();
-        wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+        if (browser.equals(Browser.CHROME)) {
+            ChromeOptions options = new ChromeOptions();
+            options.setHeadless(true);
+            wd = new ChromeDriver(options);
+            wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        } else if (browser.equals(Browser.FIREFOX)) {
+            FirefoxOptions options = new FirefoxOptions();
+            options.setBinary("C:\\Program Files\\Mozilla Firefox\\firefox.exe");
+            wd = new FirefoxDriver(options);
+            wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        } else if ((browser.equals(Browser.EDGE))) {
+            EdgeOptions options = new EdgeOptions();
+            options.setBinary("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe");
+            wd = new EdgeDriver(options);
+            wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        } else {
+            throw new RuntimeException("Incorrect Browser");
+        }
+
         groupHelper = new GroupHelper(wd);
         contactHelper = new ContactHelper(wd);
         sessionHelper = new SessionHelper(wd);
