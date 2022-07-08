@@ -43,4 +43,15 @@ public class GroupHelper extends HelperBase {
     public void initGroupDeletion() {
         clickElement(By.xpath("//input[@name='delete']"));
     }
+
+    public boolean isGroupsPresented () {
+        return isElementPresent(By.xpath("//input[@name='selected[]']"));
+    }
+
+    public void createGroup(GroupData group_data) {
+        initGroupCreation();
+        fillGroupForm(group_data);
+        submitGroupCreation();
+        returnToGroupPage();
+    }
 }

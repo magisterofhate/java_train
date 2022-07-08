@@ -55,4 +55,8 @@ public class ContactHelper extends HelperBase {
     public void deleteContactFromModificationForm() {
         clickElement(By.xpath("//input[@value='Delete']"));
     }
+
+    public boolean isContactsPresented (){
+        return isElementPresent(By.xpath("//input[@name='selected[]']"));
+    }
 }
