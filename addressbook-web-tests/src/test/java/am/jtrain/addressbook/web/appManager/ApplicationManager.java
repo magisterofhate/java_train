@@ -29,20 +29,19 @@ public class ApplicationManager {
             ChromeOptions options = new ChromeOptions();
             options.setHeadless(false);
             wd = new ChromeDriver(options);
-            wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
         } else if (browser.equals(Browser.FIREFOX)) {
             FirefoxOptions options = new FirefoxOptions();
             options.setBinary("C:\\Program Files\\Mozilla Firefox\\firefox.exe");
             wd = new FirefoxDriver(options);
-            wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
         } else if ((browser.equals(Browser.EDGE))) {
             EdgeOptions options = new EdgeOptions();
             options.setBinary("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe");
             wd = new EdgeDriver(options);
-            wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
         } else {
             throw new RuntimeException("Incorrect Browser");
         }
+
+        wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
 
         groupHelper = new GroupHelper(wd);
         contactHelper = new ContactHelper(wd);

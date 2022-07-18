@@ -24,7 +24,8 @@ public class ContactDeletionTests extends TestBase{
             app.getContactHelper().createContact(new ContactData("Firstname 123", "Lastname 123",
                     null, null, null, null, null, null, null));
         }
-        app.getContactHelper().initContactModification();
+        Integer rnd_contact = app.getGroupHelper().chooseRandomElement();
+        app.getContactHelper().initContactModification(rnd_contact);
         app.getContactHelper().deleteContactFromModificationForm();
         app.getSessionHelper().logout();
     }

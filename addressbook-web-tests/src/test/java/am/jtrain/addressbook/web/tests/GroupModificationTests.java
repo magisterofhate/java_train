@@ -12,7 +12,8 @@ public class GroupModificationTests extends TestBase{
             app.getGroupHelper().createGroup(new GroupData("group_1", "group_test 1",
                     "group footer 1"));
         }
-        app.getGroupHelper().selectGroup();
+        Integer rnd_group = app.getGroupHelper().chooseRandomElement();
+        app.getGroupHelper().clickElementInList(rnd_group);
         app.getGroupHelper().initGroupModification();
         app.getGroupHelper().fillGroupForm(new GroupData("group_1_2", "group_test 1 2",
                 "group footer 1 2"));

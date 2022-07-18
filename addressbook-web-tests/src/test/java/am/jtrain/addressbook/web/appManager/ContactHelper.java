@@ -19,15 +19,15 @@ public class ContactHelper extends HelperBase {
     }
 
     public void fillContactForm(ContactData contactData) {
-        enterText(By.name("firstname"),contactData.getFirstname());
-        enterText(By.name("lastname"),contactData.getLastname());
-        enterText(By.name("middlename"),contactData.getMiddlename());
-        enterText(By.name("address"),contactData.getAddress());
-        enterText(By.name("home"),contactData.getHome());
-        enterText(By.name("mobile"),contactData.getMobile());
-        enterText(By.name("phone2"),contactData.getPhone2());
-        enterText(By.name("email"),contactData.getEmail());
-        enterText(By.name("email2"),contactData.getEmail2());
+        enterText(By.name("firstname"), contactData.getFirstname());
+        enterText(By.name("lastname"), contactData.getLastname());
+        enterText(By.name("middlename"), contactData.getMiddlename());
+        enterText(By.name("address"), contactData.getAddress());
+        enterText(By.name("home"), contactData.getHome());
+        enterText(By.name("mobile"), contactData.getMobile());
+        enterText(By.name("phone2"), contactData.getPhone2());
+        enterText(By.name("email"), contactData.getEmail());
+        enterText(By.name("email2"), contactData.getEmail2());
 
     }
 
@@ -44,8 +44,7 @@ public class ContactHelper extends HelperBase {
         wd.switchTo().alert().accept();
     }
 
-    public void initContactModification() {
-        String c_id = wd.findElement(By.xpath("//input[@name='selected[]']")).getAttribute("value");
+    public void initContactModification(Integer c_id) {
         clickElement(By.xpath("//a[@href='edit.php?id=" + c_id + "']"));
     }
 
@@ -57,7 +56,7 @@ public class ContactHelper extends HelperBase {
         clickElement(By.xpath("//input[@value='Delete']"));
     }
 
-    public boolean isContactsPresented (){
+    public boolean isContactsPresented() {
         return isElementPresent(By.xpath("//input[@name='selected[]']"));
     }
 

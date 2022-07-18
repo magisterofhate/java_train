@@ -1,9 +1,10 @@
 package am.jtrain.addressbook.web.appManager;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoAlertPresentException;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class HelperBase {
 
@@ -26,6 +27,22 @@ public class HelperBase {
 
     protected void clickElement(By locator) {
         wd.findElement(locator).click();
+    }
+
+    public Integer chooseRandomElement() {
+        List<Integer> element_ids = new ArrayList<>();
+        List <WebElement> elements = wd.findElements(By.xpath("//input[@name='selected[]']"));
+        for (WebElement element : elements) {
+            String gr_id = element.getAttribute("value");
+            element_ids.add(Integer.parseInt(gr_id));
+        }
+        Random random_method = new Random();
+        int index = random_method.nextInt(element_ids.size());
+        return element_ids.get(index);
+    }
+
+    public void clickElementInList(Integer e_id) {
+        clickElement(By.xpath("//input[@value=" + e_id + "]"));
     }
 
     protected boolean isElementPresent(By locator) {

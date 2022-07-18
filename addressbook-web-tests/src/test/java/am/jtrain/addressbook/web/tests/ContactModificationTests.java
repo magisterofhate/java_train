@@ -12,7 +12,8 @@ public class ContactModificationTests extends TestBase{
             app.getContactHelper().createContact(new ContactData("Firstname 123", "Lastname 123",
                     null, null, null, null, null, null, null));
         }
-        app.getContactHelper().initContactModification();
+        Integer rnd_contact = app.getGroupHelper().chooseRandomElement();
+        app.getContactHelper().initContactModification(rnd_contact);
         app.getContactHelper().fillContactForm(new ContactData("Firstname 123", "Lastname 123", "Middlename",
                 "address number one two three", "+4456789123", "+3378912367",
                 "+551428973", "one.email@test.org", "other.mail@test.school"));
