@@ -90,8 +90,7 @@ public class ContactHelper extends HelperBase {
             String c_f_name = element.findElement(By.xpath("td[3]")).getText();
             String c_l_name = element.findElement(By.xpath("td[2]")).getText();
 
-            ContactData contact = new ContactData(c_id, c_f_name, c_l_name, null,
-                    null, null, null, null, null, null);
+            ContactData contact = new ContactData(c_id, c_f_name, c_l_name);
             contacts.add(contact);
         }
         return contacts;
