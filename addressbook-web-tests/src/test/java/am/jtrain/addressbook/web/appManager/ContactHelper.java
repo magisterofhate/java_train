@@ -1,8 +1,16 @@
 package am.jtrain.addressbook.web.appManager;
 
 import am.jtrain.addressbook.web.model.ContactData;
+import am.jtrain.addressbook.web.model.GroupData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ContactHelper extends HelperBase {
 
@@ -65,6 +73,33 @@ public class ContactHelper extends HelperBase {
         fillContactForm(c_data);
         submitContactCreation();
         returnToContactPage();
+    }
+
+    public ContactData getContactDataById(Integer c_id) {
+        String c_f_name = wd.findElement(By.xpath("//input[@value='" + c_id + "']/ancestor::tr")).findElement(By.xpath("td[3]")).getText();
+        String c_l_name = wd.findElement(By.xpath("//input[@value='" + c_id + "']/ancestor::tr")).findElement(By.xpath("td[2]")).getText();
+        return new ContactData(c_id, c_f_name, c_l_name);
+    }
+
+    public List<ContactData> getContactList() {
+        List <ContactData> contacts = new ArrayList<>();
+        List <WebElement> elements = wd.findElements(By.xpath("//tr[@name='entry']"));
+        for (WebElement element : elements) {
+
+            Integer c_id = Integer.parseInt(element.findElement(By.xpath(".//td/input[@name='selected[]']")).getAttribute("id"));
+            String c_f_name = element.findElement(By.xpath("td[3]")).getText();
+            String c_l_name = element.findElement(By.xpath("td[2]")).getText();
+
+            ContactData contact = new ContactData(c_id, c_f_name, c_l_name, null,
+                    null, null, null, null, null, null);
+            contacts.add(contact);
+        }
+        return contacts;
+    }
+
+    public void waitForContactList() {
+        WebDriverWait wait = new WebDriverWait(wd, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//table[@id='maintable']")));
     }
 
 }
