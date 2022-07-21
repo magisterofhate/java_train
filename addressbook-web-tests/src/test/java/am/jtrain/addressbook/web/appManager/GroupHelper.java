@@ -59,14 +59,21 @@ public class GroupHelper extends HelperBase {
         returnToGroupPage();
     }
 
-    public void getGroupList() {
+    public GroupData getGroupDataById(Integer g_id) {
+        String g_name = wd.findElement(By.xpath("//input[@value='" + g_id + "']/parent::*")).getText();
+        return new GroupData(g_id, g_name, null, null);
+    }
+
+    public List <GroupData> getGroupList() {
         List <GroupData> groups = new ArrayList<>();
         List <WebElement> elements = wd.findElements(By.cssSelector("span.group"));
         for (WebElement element : elements) {
             String group_name = element.getText();
-            GroupData group = new GroupData(group_name, null, null);
+            Integer group_id = Integer.parseInt(element.findElement(By.xpath(".//input[@name='selected[]']")).getAttribute("value"));
+            GroupData group = new GroupData(group_id, group_name, null, null);
             groups.add(group);
         }
+        return groups;
     }
 
 }

@@ -1,10 +1,9 @@
 package am.jtrain.addressbook.web.appManager;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.NoSuchElementException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class HelperBase {
 
@@ -30,12 +29,7 @@ public class HelperBase {
     }
 
     public Integer chooseRandomElement() {
-        List<Integer> element_ids = new ArrayList<>();
-        List <WebElement> elements = wd.findElements(By.xpath("//input[@name='selected[]']"));
-        for (WebElement element : elements) {
-            String gr_id = element.getAttribute("value");
-            element_ids.add(Integer.parseInt(gr_id));
-        }
+        List <Integer> element_ids = getListIds();
         Random random_method = new Random();
         int index = random_method.nextInt(element_ids.size());
         return element_ids.get(index);
@@ -43,6 +37,20 @@ public class HelperBase {
 
     public void clickElementInList(Integer e_id) {
         clickElement(By.xpath("//input[@value=" + e_id + "]"));
+    }
+
+    public List <Integer> getListIds() {
+        List <Integer> element_ids = new ArrayList<>();
+        List <WebElement> elements = wd.findElements(By.xpath("//input[@name='selected[]']"));
+        for (WebElement element : elements) {
+            String el_id = element.getAttribute("value");
+            element_ids.add(Integer.parseInt(el_id));
+        }
+        return element_ids;
+    }
+
+    public Integer getMaxIdInList(List <Integer> id_list) {
+        return Collections.max(id_list);
     }
 
     protected boolean isElementPresent(By locator) {
