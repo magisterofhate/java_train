@@ -1,12 +1,13 @@
 package am.jtrain.addressbook.web.tests;
 
 import am.jtrain.addressbook.web.model.ContactData;
-import org.testng.Assert;
+import am.jtrain.addressbook.web.model.Contacts;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.util.Comparator;
-import java.util.List;
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.*;
+import static org.testng.Assert.*;
 
 public class ContactDeletionTests extends TestBase{
 
@@ -14,51 +15,36 @@ public class ContactDeletionTests extends TestBase{
     private void checkPreConditions() {
         app.navigate().contacts();
         if (! app.contact().isContactsPresented()) {
-            app.contact().createContact(new ContactData().withFirstname("Firstname 123").withLastname("Lastname 123"));
+            app.contact().create(new ContactData().withFirstname("Firstname 123").withLastname("Lastname 123"));
         }
     }
 
     @Test
     public void testContactDeletionFromMainPage() {
 
-        List<ContactData> before_list = app.contact().getContactList();
-        Integer rnd_contact = app.contact().chooseRandomElement();
-        ContactData removed_contact = app.contact().getContactDataById(rnd_contact);
+        Contacts before_list = app.contact().readAll();
+        ContactData removed_contact = app.contact().getContactDataById(app.contact().chooseRandomElement());
 
-        app.contact().clickElementInList(rnd_contact);
-        app.contact().submitContactDeletion();
+        app.contact().deleteFromMainPage(removed_contact);
 
-        app.contact().waitForContactList();
+        Contacts after_list = app.contact().readAll();
 
-        List<ContactData> after_list = app.contact().getContactList();
-        before_list.remove(removed_contact);
-
-        Comparator<? super ContactData> byId = Comparator.comparingInt(ContactData::getId);
-        before_list.sort(byId);
-        after_list.sort(byId);
-
-        Assert.assertEquals(before_list, after_list);
+        assertEquals(before_list.size() - 1, after_list.size());
+        assertThat(after_list, equalTo(before_list.withOut(removed_contact)));
 
     }
 
     @Test
     public void testContactDeletionFromModificationForm() {
 
-        List<ContactData> before_list = app.contact().getContactList();
-
+        Contacts before_list = app.contact().readAll();
         ContactData removed_contact = app.contact().getContactDataById(app.contact().chooseRandomElement());
 
-        app.contact().initContactModification(removed_contact.getId());
-        app.contact().deleteContactFromModificationForm();
-        app.contact().waitForContactList();
+        app.contact().deleteFromEditForm(removed_contact);
 
-        List<ContactData> after_list = app.contact().getContactList();
-        before_list.remove(removed_contact);
+        Contacts after_list = app.contact().readAll();
 
-        Comparator<? super ContactData> byId = Comparator.comparingInt(ContactData::getId);
-        before_list.sort(byId);
-        after_list.sort(byId);
-
-        Assert.assertEquals(before_list, after_list);
+        assertEquals(before_list.size() - 1, after_list.size());
+        assertThat(after_list, equalTo(before_list.withOut(removed_contact)));
     }
 }

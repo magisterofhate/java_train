@@ -1,6 +1,7 @@
 package am.jtrain.addressbook.web.appManager;
 
 import am.jtrain.addressbook.web.model.ContactData;
+import am.jtrain.addressbook.web.model.Contacts;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,7 +10,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ContactHelper extends HelperBase {
 
@@ -63,7 +66,7 @@ public class ContactHelper extends HelperBase {
         return isElementPresent(By.xpath("//input[@name='selected[]']"));
     }
 
-    public void createContact(ContactData c_data) {
+    public void create(ContactData c_data) {
         initContactCreation();
         fillContactForm(c_data);
         submitContactCreation();
@@ -75,6 +78,18 @@ public class ContactHelper extends HelperBase {
         fillContactForm(contact);
         submitContactModification();
         returnToContactPage();
+    }
+
+    public void deleteFromMainPage(ContactData contact) {
+        clickElementInList(contact.getId());
+        submitContactDeletion();
+        waitForListToLoad();
+    }
+
+    public void deleteFromEditForm(ContactData contact) {
+        initContactModification(contact.getId());
+        deleteContactFromModificationForm();
+        waitForListToLoad();
     }
 
     public ContactData getContactDataById(Integer c_id) {
@@ -98,7 +113,22 @@ public class ContactHelper extends HelperBase {
         return contacts;
     }
 
-    public void waitForContactList() {
+    public Contacts readAll() {
+        Contacts contacts = new Contacts();
+        List <WebElement> elements = wd.findElements(By.xpath("//tr[@name='entry']"));
+        for (WebElement element : elements) {
+
+            Integer c_id = Integer.parseInt(element.findElement(By.xpath(".//td/input[@name='selected[]']")).getAttribute("id"));
+            String c_f_name = element.findElement(By.xpath("td[3]")).getText();
+            String c_l_name = element.findElement(By.xpath("td[2]")).getText();
+
+            ContactData contact = new ContactData().withId(c_id).withFirstname(c_f_name).withLastname(c_l_name);
+            contacts.add(contact);
+        }
+        return contacts;
+    }
+
+    public void waitForListToLoad() {
         WebDriverWait wait = new WebDriverWait(wd, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//table[@id='maintable']")));
     }

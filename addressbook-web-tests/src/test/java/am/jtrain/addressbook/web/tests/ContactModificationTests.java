@@ -1,12 +1,13 @@
 package am.jtrain.addressbook.web.tests;
 
 import am.jtrain.addressbook.web.model.ContactData;
-import org.testng.Assert;
+import am.jtrain.addressbook.web.model.Contacts;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.util.Comparator;
-import java.util.List;
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.*;
+import static org.testng.Assert.*;
 
 public class ContactModificationTests extends TestBase{
 
@@ -14,14 +15,14 @@ public class ContactModificationTests extends TestBase{
     private void checkPreConditions() {
         app.navigate().contacts();
         if (! app.contact().isContactsPresented()) {
-            app.contact().createContact(new ContactData().withFirstname("Firstname 123").withLastname("Lastname 123"));
+            app.contact().create(new ContactData().withFirstname("Firstname 123").withLastname("Lastname 123"));
         }
     }
 
     @Test
     public void testContactModification() {
 
-        List<ContactData> before_list = app.contact().getContactList();
+        Contacts before_list = app.contact().readAll();
         Integer rnd_contact = app.contact().chooseRandomElement();
         ContactData original_contact = app.contact().getContactDataById(rnd_contact);
 
@@ -31,15 +32,10 @@ public class ContactModificationTests extends TestBase{
 
         app.contact().modify(modified_contact);
 
-        List<ContactData> after_list = app.contact().getContactList();
-        before_list.remove(original_contact);
-        before_list.add(modified_contact);
+        Contacts after_list = app.contact().readAll();
 
-        Comparator<? super ContactData> byId = Comparator.comparingInt(ContactData::getId);
-        before_list.sort(byId);
-        after_list.sort(byId);
-
-        Assert.assertEquals(before_list, after_list);
+        assertEquals(before_list.size(), after_list.size());
+        assertThat(after_list, equalTo(before_list.withOut(original_contact).withAdded(modified_contact)));
     }
 
 

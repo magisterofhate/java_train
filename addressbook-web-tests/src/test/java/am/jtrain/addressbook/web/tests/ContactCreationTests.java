@@ -1,35 +1,30 @@
 package am.jtrain.addressbook.web.tests;
 
 import am.jtrain.addressbook.web.model.ContactData;
-import org.testng.Assert;
+import am.jtrain.addressbook.web.model.Contacts;
 import org.testng.annotations.Test;
 
-import java.util.Comparator;
-import java.util.List;
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.*;
+import static org.testng.Assert.*;
 
 public class ContactCreationTests extends TestBase {
 
     @Test
     public void testContactCreation() {
         app.navigate().contacts();
-
-        List<ContactData> before_list = app.contact().getContactList();
+        Contacts before_list = app.contact().readAll();
 
         ContactData new_contact = new ContactData().withFirstname("Firstname").withLastname("Lastname").withMiddlename("Middlename")
                 .withAddress("address number one").withHome("+4456789123").withMobile("+3378912367")
                 .withPhone2("+551428973").withEmail("one.email@test.org").withEmail2("other.mail@test.school");
 
-        app.contact().createContact(new_contact);
+        app.contact().create(new_contact);
 
-        List<ContactData> after_list = app.contact().getContactList();
-        Integer max_c_id = app.contact().getMaxIdInList(app.contact().getListIds());
+        Contacts after_list = app.contact().readAll();
 
-        before_list.add(new ContactData().withId(max_c_id).withFirstname(new_contact.getFirstname()).withLastname(new_contact.getLastname()));
-        Comparator<? super ContactData> byId = Comparator.comparingInt(ContactData::getId);
-        before_list.sort(byId);
-        after_list.sort(byId);
-
-        Assert.assertEquals(before_list, after_list);
+        assertEquals(before_list.size() + 1, after_list.size());
+        assertThat(after_list, equalTo(before_list.withAdded(new_contact.withId(app.contact().getMaxIdInList(app.contact().getListIds())))));
     }
 
 }
