@@ -1,34 +1,30 @@
 package am.jtrain.addressbook.web.tests;
 
 import am.jtrain.addressbook.web.model.GroupData;
-import org.testng.Assert;
+import am.jtrain.addressbook.web.model.Groups;
 import org.testng.annotations.*;
 
-import java.util.Comparator;
-import java.util.List;
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.*;
+import static org.testng.Assert.*;
 
 public class GroupCreationTests extends TestBase {
 
     @Test
     public void testGroupCreation() {
         app.navigate().groups();
-        List<GroupData> before_list = app.group().getGroupList();
+        Groups before_list = app.group().readAll();
 
-        app.group().initGroupCreation();
-        GroupData new_group = new GroupData(null, "group_1", "group_test 1", "group footer 1");
-        app.group().fillGroupForm(new_group);
-        app.group().submitGroupCreation();
-        app.group().returnToGroupPage();
+        GroupData new_group = new GroupData().withName("group_1").withHeader("group_test 1").withFooter("group footer 1");
 
-        List<GroupData> after_list = app.group().getGroupList();
-        Integer max_g_id = app.group().getMaxIdInList(app.group().getListIds());
+        app.group().create(new_group);
 
-        before_list.add(new GroupData(max_g_id, new_group.getName(), null, null));
-        Comparator<? super GroupData> byId = Comparator.comparingInt(GroupData::getId);
-        before_list.sort(byId);
-        after_list.sort(byId);
+        Groups after_list = app.group().readAll();
 
-        Assert.assertEquals(before_list, after_list);
+        assertEquals(before_list.size() + 1, after_list.size());
+        assertThat(after_list, equalTo(before_list.withAdded(new_group.withId(app.group().getMaxIdInList(app.group().getListIds())))));
     }
+
+
 
 }

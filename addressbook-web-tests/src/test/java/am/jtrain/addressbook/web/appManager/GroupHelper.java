@@ -1,6 +1,7 @@
 package am.jtrain.addressbook.web.appManager;
 
 import am.jtrain.addressbook.web.model.GroupData;
+import am.jtrain.addressbook.web.model.Groups;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -52,16 +53,30 @@ public class GroupHelper extends HelperBase {
         return isElementPresent(By.xpath("//input[@name='selected[]']"));
     }
 
-    public void createGroup(GroupData group_data) {
+    public void create(GroupData group) {
         initGroupCreation();
-        fillGroupForm(group_data);
+        fillGroupForm(group);
         submitGroupCreation();
+        returnToGroupPage();
+    }
+
+    public void modify(GroupData group) {
+        clickElementInList(group.getId());
+        initGroupModification();
+        fillGroupForm(group);
+        submitGroupModification();
+        returnToGroupPage();
+    }
+
+    public void delete(GroupData group) {
+        clickElementInList(group.getId());
+        initGroupDeletion();
         returnToGroupPage();
     }
 
     public GroupData getGroupDataById(Integer g_id) {
         String g_name = wd.findElement(By.xpath("//input[@value='" + g_id + "']/parent::*")).getText();
-        return new GroupData(g_id, g_name, null, null);
+        return new GroupData().withId(g_id).withName(g_name);
     }
 
     public List <GroupData> getGroupList() {
@@ -70,7 +85,19 @@ public class GroupHelper extends HelperBase {
         for (WebElement element : elements) {
             String group_name = element.getText();
             Integer group_id = Integer.parseInt(element.findElement(By.xpath(".//input[@name='selected[]']")).getAttribute("value"));
-            GroupData group = new GroupData(group_id, group_name, null, null);
+            GroupData group = new GroupData().withId(group_id).withName(group_name);
+            groups.add(group);
+        }
+        return groups;
+    }
+
+    public Groups readAll() {
+        Groups groups = new Groups();
+        List <WebElement> elements = wd.findElements(By.cssSelector("span.group"));
+        for (WebElement element : elements) {
+            String group_name = element.getText();
+            Integer group_id = Integer.parseInt(element.findElement(By.xpath(".//input[@name='selected[]']")).getAttribute("value"));
+            GroupData group = new GroupData().withId(group_id).withName(group_name);
             groups.add(group);
         }
         return groups;
