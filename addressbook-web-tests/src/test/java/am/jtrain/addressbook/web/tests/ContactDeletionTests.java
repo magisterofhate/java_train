@@ -1,8 +1,8 @@
 package am.jtrain.addressbook.web.tests;
 
 import am.jtrain.addressbook.web.model.ContactData;
-import am.jtrain.addressbook.web.model.GroupData;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.Comparator;
@@ -10,24 +10,27 @@ import java.util.List;
 
 public class ContactDeletionTests extends TestBase{
 
+    @BeforeMethod
+    private void checkPreConditions() {
+        app.navigate().contacts();
+        if (! app.contact().isContactsPresented()) {
+            app.contact().createContact(new ContactData().withFirstname("Firstname 123").withLastname("Lastname 123"));
+        }
+    }
+
     @Test
     public void testContactDeletionFromMainPage() {
-        app.getNavigationHelper().goToContactPage();
-        if (! app.getContactHelper().isContactsPresented()) {
-            app.getContactHelper().createContact(new ContactData(null, "Firstname 123", "Lastname 123",
-                    null, null, null, null, null, null, null));
-        }
 
-        List<ContactData> before_list = app.getContactHelper().getContactList();
-        Integer rnd_contact = app.getContactHelper().chooseRandomElement();
-        ContactData removed_contact = app.getContactHelper().getContactDataById(rnd_contact);
+        List<ContactData> before_list = app.contact().getContactList();
+        Integer rnd_contact = app.contact().chooseRandomElement();
+        ContactData removed_contact = app.contact().getContactDataById(rnd_contact);
 
-        app.getContactHelper().clickElementInList(rnd_contact);
-        app.getContactHelper().submitContactDeletion();
+        app.contact().clickElementInList(rnd_contact);
+        app.contact().submitContactDeletion();
 
-        app.getContactHelper().waitForContactList();
+        app.contact().waitForContactList();
 
-        List<ContactData> after_list = app.getContactHelper().getContactList();
+        List<ContactData> after_list = app.contact().getContactList();
         before_list.remove(removed_contact);
 
         Comparator<? super ContactData> byId = Comparator.comparingInt(ContactData::getId);
@@ -40,22 +43,16 @@ public class ContactDeletionTests extends TestBase{
 
     @Test
     public void testContactDeletionFromModificationForm() {
-        app.getNavigationHelper().goToContactPage();
-        if (! app.getContactHelper().isContactsPresented()) {
-            app.getContactHelper().createContact(new ContactData(null, "Firstname 123", "Lastname 123",
-                    null, null, null, null, null, null, null));
-        }
 
-        List<ContactData> before_list = app.getContactHelper().getContactList();
-        Integer rnd_contact = app.getContactHelper().chooseRandomElement();
-        ContactData removed_contact = app.getContactHelper().getContactDataById(rnd_contact);
+        List<ContactData> before_list = app.contact().getContactList();
 
-        app.getContactHelper().initContactModification(rnd_contact);
-        app.getContactHelper().deleteContactFromModificationForm();
+        ContactData removed_contact = app.contact().getContactDataById(app.contact().chooseRandomElement());
 
-        app.getContactHelper().waitForContactList();
+        app.contact().initContactModification(removed_contact.getId());
+        app.contact().deleteContactFromModificationForm();
+        app.contact().waitForContactList();
 
-        List<ContactData> after_list = app.getContactHelper().getContactList();
+        List<ContactData> after_list = app.contact().getContactList();
         before_list.remove(removed_contact);
 
         Comparator<? super ContactData> byId = Comparator.comparingInt(ContactData::getId);

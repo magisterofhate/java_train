@@ -4,35 +4,15 @@ import java.util.Objects;
 
 public class ContactData {
     private Integer id;
-    private final String firstname;
-    private final String lastname;
-    private  String middlename;
-    private  String address;
-    private  String home;
-    private  String mobile;
-    private  String phone2;
-    private  String email;
-    private  String email2;
-
-    public ContactData(Integer id, String firstname, String lastname) {
-        this.id = id;
-        this.firstname = firstname;
-        this.lastname = lastname;
-    }
-
-    public ContactData(Integer id, String firstname, String lastname, String middlename, String address, String home,
-                       String mobile, String phone2, String email, String email2) {
-        this.id = id;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.middlename = middlename;
-        this.address = address;
-        this.home = home;
-        this.mobile = mobile;
-        this.phone2 = phone2;
-        this.email = email;
-        this.email2 = email2;
-    }
+    private String firstname;
+    private String lastname;
+    private String middlename;
+    private String address;
+    private String home;
+    private String mobile;
+    private String phone2;
+    private String email;
+    private String email2;
 
     public String getFirstname() {
 
@@ -75,6 +55,56 @@ public class ContactData {
 
     public Integer getId() {
         return id;
+    }
+
+    public ContactData withId(Integer id) {
+        this.id = id;
+        return this;
+    }
+
+    public ContactData withFirstname(String firstname) {
+        this.firstname = firstname;
+        return this;
+    }
+
+    public ContactData withLastname(String lastname) {
+        this.lastname = lastname;
+        return this;
+    }
+
+    public ContactData withMiddlename(String middlename) {
+        this.middlename = middlename;
+        return this;
+    }
+
+    public ContactData withAddress(String address) {
+        this.address = address;
+        return this;
+    }
+
+    public ContactData withHome(String home) {
+        this.home = home;
+        return this;
+    }
+
+    public ContactData withMobile(String mobile) {
+        this.mobile = mobile;
+        return this;
+    }
+
+    public ContactData withPhone2(String phone2) {
+        this.phone2 = phone2;
+        return this;
+    }
+
+    public ContactData withEmail(String email) {
+        this.email = email;
+        return this;
+    }
+
+    public ContactData withEmail2(String email2) {
+        this.email2 = email2;
+        return this;
     }
 
     @Override

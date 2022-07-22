@@ -11,21 +11,21 @@ public class GroupDeletionTests extends TestBase{
 
     @Test
     public void testGroupDeletion() {
-        app.getNavigationHelper().goToGroupPage();
-        if (! app.getGroupHelper().isGroupsPresented()) {
-            app.getGroupHelper().createGroup(new GroupData(null, "group_1", "group_test 1",
+        app.navigate().groups();
+        if (! app.group().isGroupsPresented()) {
+            app.group().createGroup(new GroupData(null, "group_1", "group_test 1",
                     "group footer 1"));
         }
 
-        List<GroupData> before_list = app.getGroupHelper().getGroupList();
-        Integer rnd_group = app.getGroupHelper().chooseRandomElement();
-        GroupData removed_group = app.getGroupHelper().getGroupDataById(rnd_group);
+        List<GroupData> before_list = app.group().getGroupList();
+        Integer rnd_group = app.group().chooseRandomElement();
+        GroupData removed_group = app.group().getGroupDataById(rnd_group);
 
-        app.getGroupHelper().clickElementInList(rnd_group);
-        app.getGroupHelper().initGroupDeletion();
-        app.getGroupHelper().returnToGroupPage();
+        app.group().clickElementInList(rnd_group);
+        app.group().initGroupDeletion();
+        app.group().returnToGroupPage();
 
-        List<GroupData> after_list = app.getGroupHelper().getGroupList();
+        List<GroupData> after_list = app.group().getGroupList();
         before_list.remove(removed_group);
 
         Comparator<? super GroupData> byId = Comparator.comparingInt(GroupData::getId);

@@ -1,7 +1,6 @@
 package am.jtrain.addressbook.web.appManager;
 
 import am.jtrain.addressbook.web.model.ContactData;
-import am.jtrain.addressbook.web.model.GroupData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -43,10 +42,6 @@ public class ContactHelper extends HelperBase {
         clickElement(By.name("submit"));
     }
 
-    public void selectContactForDeletion() {
-        clickElement(By.name("selected[]"));
-    }
-
     public void submitContactDeletion() {
         clickElement(By.xpath("//input[@value='Delete']"));
         wd.switchTo().alert().accept();
@@ -75,10 +70,17 @@ public class ContactHelper extends HelperBase {
         returnToContactPage();
     }
 
+    public void modify(ContactData contact) {
+        initContactModification(contact.getId());
+        fillContactForm(contact);
+        submitContactModification();
+        returnToContactPage();
+    }
+
     public ContactData getContactDataById(Integer c_id) {
         String c_f_name = wd.findElement(By.xpath("//input[@value='" + c_id + "']/ancestor::tr")).findElement(By.xpath("td[3]")).getText();
         String c_l_name = wd.findElement(By.xpath("//input[@value='" + c_id + "']/ancestor::tr")).findElement(By.xpath("td[2]")).getText();
-        return new ContactData(c_id, c_f_name, c_l_name);
+        return new ContactData().withId(c_id).withFirstname(c_f_name).withLastname(c_l_name);
     }
 
     public List<ContactData> getContactList() {
@@ -90,7 +92,7 @@ public class ContactHelper extends HelperBase {
             String c_f_name = element.findElement(By.xpath("td[3]")).getText();
             String c_l_name = element.findElement(By.xpath("td[2]")).getText();
 
-            ContactData contact = new ContactData(c_id, c_f_name, c_l_name);
+            ContactData contact = new ContactData().withId(c_id).withFirstname(c_f_name).withLastname(c_l_name);
             contacts.add(contact);
         }
         return contacts;

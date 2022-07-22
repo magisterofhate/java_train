@@ -1,7 +1,6 @@
 package am.jtrain.addressbook.web.tests;
 
 import am.jtrain.addressbook.web.model.ContactData;
-import am.jtrain.addressbook.web.model.GroupData;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -12,22 +11,20 @@ public class ContactCreationTests extends TestBase {
 
     @Test
     public void testContactCreation() {
-        app.getNavigationHelper().goToContactPage();
+        app.navigate().contacts();
 
-        List<ContactData> before_list = app.getContactHelper().getContactList();
+        List<ContactData> before_list = app.contact().getContactList();
 
-        app.getContactHelper().initContactCreation();
-        ContactData new_contact = new ContactData(null, "Firstname", "Lastname", "Middlename",
-                "address number one", "+4456789123", "+3378912367",
-                "+551428973", "one.email@test.org", "other.mail@test.school");
-        app.getContactHelper().fillContactForm(new_contact);
-        app.getContactHelper().submitContactCreation();
-        app.getContactHelper().returnToContactPage();
+        ContactData new_contact = new ContactData().withFirstname("Firstname").withLastname("Lastname").withMiddlename("Middlename")
+                .withAddress("address number one").withHome("+4456789123").withMobile("+3378912367")
+                .withPhone2("+551428973").withEmail("one.email@test.org").withEmail2("other.mail@test.school");
 
-        List<ContactData> after_list = app.getContactHelper().getContactList();
-        Integer max_c_id = app.getContactHelper().getMaxIdInList(app.getContactHelper().getListIds());
+        app.contact().createContact(new_contact);
 
-        before_list.add(new ContactData(max_c_id, new_contact.getFirstname(), new_contact.getLastname()));
+        List<ContactData> after_list = app.contact().getContactList();
+        Integer max_c_id = app.contact().getMaxIdInList(app.contact().getListIds());
+
+        before_list.add(new ContactData().withId(max_c_id).withFirstname(new_contact.getFirstname()).withLastname(new_contact.getLastname()));
         Comparator<? super ContactData> byId = Comparator.comparingInt(ContactData::getId);
         before_list.sort(byId);
         after_list.sort(byId);
