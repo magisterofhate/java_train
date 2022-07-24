@@ -2,7 +2,6 @@ package am.jtrain.addressbook.web.appManager;
 
 import am.jtrain.addressbook.web.model.ContactData;
 import am.jtrain.addressbook.web.model.Contacts;
-import org.checkerframework.checker.units.qual.C;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -11,6 +10,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ContactHelper extends HelperBase {
 
@@ -35,9 +36,11 @@ public class ContactHelper extends HelperBase {
         enterText(By.name("address"), contactData.getAddress());
         enterText(By.name("home"), contactData.getHome());
         enterText(By.name("mobile"), contactData.getMobile());
+        enterText(By.name("work"), contactData.getWork());
         enterText(By.name("phone2"), contactData.getPhone2());
         enterText(By.name("email"), contactData.getEmail());
         enterText(By.name("email2"), contactData.getEmail2());
+        enterText(By.name("email3"), contactData.getEmail3());
 
     }
 
@@ -118,6 +121,51 @@ public class ContactHelper extends HelperBase {
             contactCache.add(contact);
         }
         return new Contacts(contactCache);
+    }
+
+    public ContactData readAllContactDataFromMainPage(Integer c_id) {
+        String c_f_name = wd.findElement(By.xpath("//tr[.//input[contains(@value," + c_id + ")]]/td[3]")).getText();
+        String c_l_name = wd.findElement(By.xpath("//tr[.//input[contains(@value," + c_id + ")]]/td[2]")).getText();
+        String address = wd.findElement(By.xpath("//tr[.//input[contains(@value," + c_id + ")]]/td[4]")).getText();
+        String phones = wd.findElement(By.xpath("//tr[.//input[contains(@value," + c_id + ")]]/td[6]")).getText();
+        String emails = wd.findElement(By.xpath("//tr[.//input[contains(@value," + c_id + ")]]/td[5]")).getText();
+
+        return new ContactData().withId(c_id).withFirstname(c_f_name).withLastname(c_l_name)
+                .withAllEmails(emails).withAllPhones(phones).withAddress(address);
+    }
+
+    public ContactData readAllContactDataFromEditPage(ContactData contact) {
+        initContactModification(contact.getId());
+        String c_f_name = wd.findElement(By.name("firstname")).getAttribute("value");
+        String c_l_name = wd.findElement(By.name("lastname")).getAttribute("value");
+        String c_m_name = wd.findElement(By.name("middlename")).getAttribute("value");
+        String address = wd.findElement(By.name("address")).getAttribute("value");
+        String h_phone = wd.findElement(By.name("home")).getAttribute("value");
+        String m_phone = wd.findElement(By.name("mobile")).getAttribute("value");
+        String w_phone = wd.findElement(By.name("work")).getAttribute("value");
+        String phone_2 = wd.findElement(By.name("phone2")).getAttribute("value");
+        String email1 = wd.findElement(By.name("email")).getAttribute("value");
+        String email2 = wd.findElement(By.name("email2")).getAttribute("value");
+        String email3 = wd.findElement(By.name("email3")).getAttribute("value");
+
+        return new ContactData().withId(contact.getId()).withFirstname(c_f_name).withLastname(c_l_name).withMiddlename(c_m_name)
+                .withAddress(address).withHome(h_phone).withMobile(m_phone).withPhone2(phone_2).withWork(w_phone)
+                .withEmail(email1).withEmail2(email2).withEmail3(email3);
+    }
+
+    public String phones (ContactData contact) {
+        return Stream.of(contact.getHome(), contact.getMobile(), contact.getWork(),contact.getPhone2()).filter(s -> !s.equals(""))
+                .map(HelperBase::clearPhones)
+                .collect(Collectors.joining("\n"));
+    }
+
+    public String emails (ContactData contact) {
+        return Stream.of(contact.getEmail(), contact.getEmail2(), contact.getEmail3()).filter(s -> !s.equals(""))
+                .collect(Collectors.joining("\n"));
+    }
+
+    public String cleanAddresses (String addresses) {
+        return addresses.replaceAll("\n", "");
     }
 
     public Integer count() {

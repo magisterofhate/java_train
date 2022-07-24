@@ -13,6 +13,10 @@ public class HelperBase {
         this.wd = wd;
     }
 
+    public static String clearPhones(String phones) {
+        return phones.replaceAll("[() -]", "");
+    }
+
     protected void enterText(By locator, String text) {
         if (text != null) {
             String currentText = wd.findElement(locator).getAttribute("value");

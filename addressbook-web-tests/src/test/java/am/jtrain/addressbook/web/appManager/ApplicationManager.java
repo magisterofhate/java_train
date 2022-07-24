@@ -27,7 +27,7 @@ public class ApplicationManager {
     public void init() {
         if (browser.equals(Browser.CHROME)) {
             ChromeOptions options = new ChromeOptions();
-            options.setHeadless(true);
+            options.setHeadless(false);
             wd = new ChromeDriver(options);
         } else if (browser.equals(Browser.FIREFOX)) {
             FirefoxOptions options = new FirefoxOptions();
