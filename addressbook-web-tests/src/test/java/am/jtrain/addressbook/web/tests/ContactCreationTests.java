@@ -20,10 +20,8 @@ public class ContactCreationTests extends TestBase {
                 .withPhone2("+551428973").withEmail("one.email@test.org").withEmail2("other.mail@test.school");
 
         app.contact().create(new_contact);
-
+        assertEquals(app.contact().count(), before_list.size() + 1);
         Contacts after_list = app.contact().readAll();
-
-        assertEquals(before_list.size() + 1, after_list.size());
         assertThat(after_list, equalTo(before_list.withAdded(new_contact.withId(app.contact().getMaxIdInList(app.contact().getListIds())))));
     }
 

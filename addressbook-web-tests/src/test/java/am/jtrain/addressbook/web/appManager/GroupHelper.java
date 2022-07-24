@@ -11,6 +11,8 @@ import java.util.List;
 
 public class GroupHelper extends HelperBase {
 
+    private Groups groupCache = null;
+
     public GroupHelper(WebDriver wd) {
         super(wd);
     }
@@ -33,10 +35,6 @@ public class GroupHelper extends HelperBase {
         clickElement(By.linkText("group page"));
     }
 
-    public void selectGroup() {
-        clickElement(By.name("selected[]"));
-    }
-
     public void initGroupModification() {
         clickElement(By.xpath("//input[@name='edit']"));
     }
@@ -57,6 +55,7 @@ public class GroupHelper extends HelperBase {
         initGroupCreation();
         fillGroupForm(group);
         submitGroupCreation();
+        groupCache = null;
         returnToGroupPage();
     }
 
@@ -65,12 +64,14 @@ public class GroupHelper extends HelperBase {
         initGroupModification();
         fillGroupForm(group);
         submitGroupModification();
+        groupCache = null;
         returnToGroupPage();
     }
 
     public void delete(GroupData group) {
         clickElementInList(group.getId());
         initGroupDeletion();
+        groupCache = null;
         returnToGroupPage();
     }
 
@@ -79,28 +80,22 @@ public class GroupHelper extends HelperBase {
         return new GroupData().withId(g_id).withName(g_name);
     }
 
-    public List <GroupData> getGroupList() {
-        List <GroupData> groups = new ArrayList<>();
-        List <WebElement> elements = wd.findElements(By.cssSelector("span.group"));
-        for (WebElement element : elements) {
-            String group_name = element.getText();
-            Integer group_id = Integer.parseInt(element.findElement(By.xpath(".//input[@name='selected[]']")).getAttribute("value"));
-            GroupData group = new GroupData().withId(group_id).withName(group_name);
-            groups.add(group);
-        }
-        return groups;
-    }
-
     public Groups readAll() {
-        Groups groups = new Groups();
+        if (groupCache != null) {
+            return new Groups(groupCache);
+        }
+        groupCache = new Groups();
         List <WebElement> elements = wd.findElements(By.cssSelector("span.group"));
         for (WebElement element : elements) {
             String group_name = element.getText();
             Integer group_id = Integer.parseInt(element.findElement(By.xpath(".//input[@name='selected[]']")).getAttribute("value"));
             GroupData group = new GroupData().withId(group_id).withName(group_name);
-            groups.add(group);
+            groupCache.add(group);
         }
-        return groups;
+        return new Groups(groupCache);
     }
 
+    public Integer count() {
+        return wd.findElements(By.xpath("//input[@name='selected[]']")).size();
+    }
 }

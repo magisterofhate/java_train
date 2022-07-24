@@ -2,6 +2,7 @@ package am.jtrain.addressbook.web.appManager;
 
 import am.jtrain.addressbook.web.model.ContactData;
 import am.jtrain.addressbook.web.model.Contacts;
+import org.checkerframework.checker.units.qual.C;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,12 +10,11 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class ContactHelper extends HelperBase {
+
+    private Contacts contactCache = null;
 
     public ContactHelper(WebDriver wd) {
         super(wd);
@@ -70,6 +70,7 @@ public class ContactHelper extends HelperBase {
         initContactCreation();
         fillContactForm(c_data);
         submitContactCreation();
+        contactCache = null;
         returnToContactPage();
     }
 
@@ -77,18 +78,21 @@ public class ContactHelper extends HelperBase {
         initContactModification(contact.getId());
         fillContactForm(contact);
         submitContactModification();
+        contactCache = null;
         returnToContactPage();
     }
 
     public void deleteFromMainPage(ContactData contact) {
         clickElementInList(contact.getId());
         submitContactDeletion();
+        contactCache = null;
         waitForListToLoad();
     }
 
     public void deleteFromEditForm(ContactData contact) {
         initContactModification(contact.getId());
         deleteContactFromModificationForm();
+        contactCache = null;
         waitForListToLoad();
     }
 
@@ -98,8 +102,11 @@ public class ContactHelper extends HelperBase {
         return new ContactData().withId(c_id).withFirstname(c_f_name).withLastname(c_l_name);
     }
 
-    public List<ContactData> getContactList() {
-        List <ContactData> contacts = new ArrayList<>();
+    public Contacts readAll() {
+        if (contactCache != null) {
+            return new Contacts(contactCache);
+        }
+        contactCache = new Contacts();
         List <WebElement> elements = wd.findElements(By.xpath("//tr[@name='entry']"));
         for (WebElement element : elements) {
 
@@ -108,24 +115,13 @@ public class ContactHelper extends HelperBase {
             String c_l_name = element.findElement(By.xpath("td[2]")).getText();
 
             ContactData contact = new ContactData().withId(c_id).withFirstname(c_f_name).withLastname(c_l_name);
-            contacts.add(contact);
+            contactCache.add(contact);
         }
-        return contacts;
+        return new Contacts(contactCache);
     }
 
-    public Contacts readAll() {
-        Contacts contacts = new Contacts();
-        List <WebElement> elements = wd.findElements(By.xpath("//tr[@name='entry']"));
-        for (WebElement element : elements) {
-
-            Integer c_id = Integer.parseInt(element.findElement(By.xpath(".//td/input[@name='selected[]']")).getAttribute("id"));
-            String c_f_name = element.findElement(By.xpath("td[3]")).getText();
-            String c_l_name = element.findElement(By.xpath("td[2]")).getText();
-
-            ContactData contact = new ContactData().withId(c_id).withFirstname(c_f_name).withLastname(c_l_name);
-            contacts.add(contact);
-        }
-        return contacts;
+    public Integer count() {
+        return wd.findElements(By.xpath("//input[@name='selected[]']")).size();
     }
 
     public void waitForListToLoad() {

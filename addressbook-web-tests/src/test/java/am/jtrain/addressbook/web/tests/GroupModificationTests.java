@@ -30,9 +30,8 @@ public class GroupModificationTests extends TestBase{
 
         app.group().modify(group);
 
+        assertEquals(app.group().count(), before_list.size());
         Groups after_list = app.group().readAll();
-
-        assertEquals(before_list.size(), after_list.size());
         assertThat(after_list, hasItem(group));
     }
 }

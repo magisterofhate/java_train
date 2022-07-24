@@ -26,10 +26,8 @@ public class ContactDeletionTests extends TestBase{
         ContactData removed_contact = app.contact().getContactDataById(app.contact().chooseRandomElement());
 
         app.contact().deleteFromMainPage(removed_contact);
-
+        assertEquals(app.contact().count(), before_list.size() - 1);
         Contacts after_list = app.contact().readAll();
-
-        assertEquals(before_list.size() - 1, after_list.size());
         assertThat(after_list, equalTo(before_list.withOut(removed_contact)));
 
     }
@@ -41,10 +39,8 @@ public class ContactDeletionTests extends TestBase{
         ContactData removed_contact = app.contact().getContactDataById(app.contact().chooseRandomElement());
 
         app.contact().deleteFromEditForm(removed_contact);
-
+        assertEquals(app.contact().count(), before_list.size() - 1);
         Contacts after_list = app.contact().readAll();
-
-        assertEquals(before_list.size() - 1, after_list.size());
         assertThat(after_list, equalTo(before_list.withOut(removed_contact)));
     }
 }
