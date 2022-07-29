@@ -13,3 +13,5 @@ gradle-app.setting
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
 /.idea/misc.xml
+/addressbook-web-tests/src/test/java/am/jtrain/addressbook/web/resources/groups.json
+/addressbook-web-tests/src/test/java/am/jtrain/addressbook/web/resources/contacts.json
