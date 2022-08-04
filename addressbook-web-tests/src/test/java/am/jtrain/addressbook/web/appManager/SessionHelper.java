@@ -9,8 +9,8 @@ public class SessionHelper extends HelperBase {
         super(wd);
     }
 
-    public void login(String username, String password) {
-        wd.get("http://localhost/addressbook/");
+    public void login(String username, String password, String baseUrl) {
+        wd.get(baseUrl);
         enterText(By.name("user"),username);
         enterText(By.name("pass"),password);
         clickElement(By.xpath("//input[@value='Login']"));

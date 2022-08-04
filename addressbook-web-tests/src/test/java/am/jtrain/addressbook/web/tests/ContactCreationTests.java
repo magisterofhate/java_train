@@ -2,7 +2,6 @@ package am.jtrain.addressbook.web.tests;
 
 import am.jtrain.addressbook.web.model.ContactData;
 import am.jtrain.addressbook.web.model.Contacts;
-import am.jtrain.addressbook.web.model.GroupData;
 import com.google.gson.Gson;
 import org.openqa.selenium.json.TypeToken;
 import org.testng.annotations.DataProvider;
