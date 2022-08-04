@@ -14,3 +14,20 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.9.0'
 }
 
+task testContacts(type: Test) {
+    useTestNG {
+        suites 'src/test/java/am/jtrain/addressbook/web/resources/test-contacts.xml'
+    }
+    if (project.hasProperty('config')){
+        systemProperty('config', "${config}")
+    }
+}
+
+task testGroups(type: Test) {
+    useTestNG {
+        suites 'src/test/java/am/jtrain/addressbook/web/resources/test-groups.xml'
+    }
+    if (project.hasProperty('config')){
+        systemProperty('config', "${config}")
+    }
+}
