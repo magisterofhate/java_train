@@ -19,7 +19,7 @@ public class GroupCreationTests extends TestBase {
 
     @DataProvider
     public Iterator<Object[]> groupsFromJson() throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader("src/test/java/am/jtrain/addressbook/web/resources/groups.json"));
+        BufferedReader reader = new BufferedReader(new FileReader("src/test/resources/groups.json"));
         StringBuilder json = new StringBuilder();
         String line = reader.readLine();
         while (line != null) {
@@ -34,12 +34,12 @@ public class GroupCreationTests extends TestBase {
     @Test (dataProvider = "groupsFromJson")
     public void testGroupCreation(GroupData group) {
         app.navigate().groups();
-        Groups before_list = app.group().readAll();
+        Groups before_list = app.db().groupsFromDb();
 
         app.group().create(group);
 
         assertEquals(app.group().count() , before_list.size() + 1);
-        Groups after_list = app.group().readAll();
+        Groups after_list = app.db().groupsFromDb();
         assertThat(after_list, equalTo(before_list.withAdded(group.withId(app.group().getMaxIdInList(app.group().getListIds())))));
     }
 

@@ -22,6 +22,7 @@ public class ApplicationManager {
     private ContactHelper contactHelper;
     private SessionHelper sessionHelper;
     private final Properties properties;
+    private DbHelper dbHelper;
 
     public ApplicationManager () {
         properties = new Properties();
@@ -30,14 +31,16 @@ public class ApplicationManager {
     public void init() throws IOException {
 
         String config = System.getProperty("config", "local");
-        properties.load(new FileReader(String.format("src/test/java/am/jtrain/addressbook/web/resources/%s.properties", config)));
+        properties.load(new FileReader(String.format("src/test/resources/%s.properties", config)));
+
+        dbHelper = new DbHelper();
 
         String browser = properties.getProperty("defaultBrowser");
 
         switch (browser) {
             case "CHROME": {
                 ChromeOptions options = new ChromeOptions();
-                options.setHeadless(false);
+                options.setHeadless(true);
                 wd = new ChromeDriver(options);
                 break;
             }
@@ -65,6 +68,7 @@ public class ApplicationManager {
         navigationHelper = new NavigationHelper(wd);
         sessionHelper.login(properties.getProperty("login"),
                 properties.getProperty("password"), properties.getProperty("baseURL"));
+
     }
 
     public void stop() {
@@ -86,5 +90,9 @@ public class ApplicationManager {
 
     public NavigationHelper navigate() {
         return navigationHelper;
+    }
+
+    public DbHelper db() {
+        return dbHelper;
     }
 }

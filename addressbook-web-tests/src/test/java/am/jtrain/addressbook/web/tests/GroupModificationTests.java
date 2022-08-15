@@ -13,16 +13,17 @@ public class GroupModificationTests extends TestBase{
 
     @BeforeMethod
     private void checkPreConditions() {
-        app.navigate().groups();
-        if (! app.group().isGroupsPresented()) {
+        if (app.db().groupsFromDb().size() ==0) {
+            app.navigate().groups();
             app.group().create(new GroupData().withName("group_1").withHeader("group_test 1").withFooter("group footer 1"));
         }
     }
 
     @Test
     public void testGroupModification() {
+        app.navigate().groups();
 
-        Groups before_list = app.group().readAll();
+        Groups before_list = app.db().groupsFromDb();
 
         Integer rnd_group = app.group().chooseRandomElement();
         GroupData group = new GroupData().withId(rnd_group).withName("group_1_2").withHeader("group_test 1 2")
@@ -31,7 +32,7 @@ public class GroupModificationTests extends TestBase{
         app.group().modify(group);
 
         assertEquals(app.group().count(), before_list.size());
-        Groups after_list = app.group().readAll();
+        Groups after_list = app.db().groupsFromDb();
         assertThat(after_list, hasItem(group));
     }
 }
