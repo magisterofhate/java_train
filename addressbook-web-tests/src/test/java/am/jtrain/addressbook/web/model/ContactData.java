@@ -1,21 +1,50 @@
 package am.jtrain.addressbook.web.model;
 
+import org.hibernate.annotations.Type;
+
+import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
+@Table(name = "addressbook")
 public class ContactData {
+    @Id
+    @Column
     private Integer id;
+    @Column
     private String firstname;
+    @Column
     private String lastname;
+    @Column
     private String middlename;
+    @Column
+    @Type(type = "text")
     private String address;
+    @Column
+    @Type(type = "text")
     private String home;
+    @Column
+    @Type(type = "text")
     private String mobile;
+    @Column
+    @Type(type = "text")
     private String work;
+    @Column
+    @Type(type = "text")
     private String phone2;
+    @Column
+    @Type(type = "text")
     private String email;
+    @Column
+    @Type(type = "text")
     private String email2;
+    @Column
+    @Type(type = "text")
     private String email3;
+    @Transient
     private String allPhones;
+
+    @Transient
     private String allEmails;
 
 
@@ -154,19 +183,22 @@ public class ContactData {
                 "id=" + id +
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
+                ", middlename='" + middlename + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", email='" + email + '\'' +
                 '}';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ContactData)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         ContactData that = (ContactData) o;
-        return Objects.equals(id, that.id) && Objects.equals(firstname, that.firstname) && Objects.equals(lastname, that.lastname);
+        return Objects.equals(id, that.id) && Objects.equals(firstname, that.firstname) && Objects.equals(lastname, that.lastname) && Objects.equals(middlename, that.middlename) && Objects.equals(mobile, that.mobile) && Objects.equals(email, that.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstname, lastname);
+        return Objects.hash(id, firstname, lastname, middlename, mobile, email);
     }
 }

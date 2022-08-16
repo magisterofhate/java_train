@@ -13,18 +13,18 @@ public class ContactModificationTests extends TestBase{
 
     @BeforeMethod
     private void checkPreConditions() {
-        app.navigate().contacts();
-        if (! app.contact().isContactsPresented()) {
+        if (app.db().contactsFromDb().size() == 0) {
+            app.navigate().contacts();
             app.contact().create(new ContactData().withFirstname("Firstname 123").withLastname("Lastname 123"));
         }
     }
 
     @Test
     public void testContactModification() {
-
-        Contacts before_list = app.contact().readAll();
+        app.navigate().contacts();
+        Contacts before_list = app.db().contactsFromDb();
         Integer rnd_contact = app.contact().chooseRandomElement();
-        ContactData original_contact = app.contact().getContactDataById(rnd_contact);
+        ContactData original_contact = app.db().contactDataByIdFromDb(rnd_contact);
 
         ContactData modified_contact = new ContactData().withId(rnd_contact).withFirstname("Firstname 123").withLastname("Lastname 123")
                 .withMiddlename("Middlename").withAddress("address number one two three").withHome("+4456789123")
@@ -33,9 +33,7 @@ public class ContactModificationTests extends TestBase{
         app.contact().modify(modified_contact);
 
         assertEquals(app.contact().count(), before_list.size());
-        Contacts after_list = app.contact().readAll();
+        Contacts after_list = app.db().contactsFromDb();
         assertThat(after_list, equalTo(before_list.withOut(original_contact).withAdded(modified_contact)));
     }
-
-
 }

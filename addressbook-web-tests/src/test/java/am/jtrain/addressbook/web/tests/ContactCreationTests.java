@@ -22,7 +22,7 @@ public class ContactCreationTests extends TestBase {
 
     @DataProvider
     public Iterator<Object[]> contactsFromJson() throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader("src/test/java/am/jtrain/addressbook/web/resources/contacts.json"));
+        BufferedReader reader = new BufferedReader(new FileReader("src/test/resources/contacts.json"));
         StringBuilder json = new StringBuilder();
         String line = reader.readLine();
         while (line != null) {
@@ -37,11 +37,11 @@ public class ContactCreationTests extends TestBase {
     @Test (dataProvider = "contactsFromJson")
     public void testContactCreation(ContactData contact) {
         app.navigate().contacts();
-        Contacts before_list = app.contact().readAll();
+        Contacts before_list = app.db().contactsFromDb();
 
         app.contact().create(contact);
         assertEquals(app.contact().count(), before_list.size() + 1);
-        Contacts after_list = app.contact().readAll();
+        Contacts after_list = app.db().contactsFromDb();
         assertThat(after_list, equalTo(before_list.withAdded(contact.withId(app.contact().getMaxIdInList(app.contact().getListIds())))));
     }
 
