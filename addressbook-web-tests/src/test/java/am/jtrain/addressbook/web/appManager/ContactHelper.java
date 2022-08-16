@@ -6,6 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
@@ -162,6 +163,18 @@ public class ContactHelper extends HelperBase {
     public String emails (ContactData contact) {
         return Stream.of(contact.getEmail(), contact.getEmail2(), contact.getEmail3()).filter(s -> !s.equals(""))
                 .collect(Collectors.joining("\n"));
+    }
+
+    public void addToGroup (Integer c_id, Integer g_id) {
+        clickElementInList(c_id);
+        Select drpCountry = new Select(wd.findElement(By.name("to_group")));
+        drpCountry.selectByValue(String.valueOf(g_id));
+        clickElement(By.name("add"));
+    }
+
+    public void removeFromGroup (Integer c_id) {
+        clickElementInList(c_id);
+        clickElement(By.name("remove"));
     }
 
     public String cleanAddresses (String addresses) {

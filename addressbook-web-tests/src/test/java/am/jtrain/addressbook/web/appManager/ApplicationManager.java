@@ -40,7 +40,7 @@ public class ApplicationManager {
         switch (browser) {
             case "CHROME": {
                 ChromeOptions options = new ChromeOptions();
-                options.setHeadless(true);
+                options.setHeadless(false);
                 wd = new ChromeDriver(options);
                 break;
             }
