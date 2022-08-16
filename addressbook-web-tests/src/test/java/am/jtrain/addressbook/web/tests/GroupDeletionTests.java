@@ -5,11 +5,8 @@ import am.jtrain.addressbook.web.model.Groups;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.time.Duration;
-
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
-import static org.hamcrest.Matchers.hasItem;
 import static org.testng.Assert.*;
 
 public class GroupDeletionTests extends TestBase{
@@ -23,20 +20,16 @@ public class GroupDeletionTests extends TestBase{
     }
 
     @Test
-    public void testGroupDeletion() throws InterruptedException {
+    public void testGroupDeletion() {
         app.navigate().groups();
 
         Groups before_list = app.db().groupsFromDb();
-        GroupData removed_group = app.group().getGroupDataById(app.group().chooseRandomElement());
+        GroupData removed_group = app.db().groupDataByIdFromDb(app.group().chooseRandomElement());
 
         app.group().delete(removed_group);
 
         assertEquals(app.group().count(), before_list.size() - 1);
-        Thread.sleep(2000);
         Groups after_list = app.db().groupsFromDb();
-        //assertThat(after_list, equalTo(before_list.withOut(removed_group)));
-        assertThat(after_list, not(hasItem(removed_group)));
+        assertThat(after_list, equalTo(before_list.withOut(removed_group)));
     }
-
-
 }
