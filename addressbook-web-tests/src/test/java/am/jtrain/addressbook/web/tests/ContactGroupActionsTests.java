@@ -15,7 +15,7 @@ public class ContactGroupActionsTests extends TestBase {
 
     @BeforeMethod
     private void checkPreConditions() {
-        if (app.db().contactsFromDb().size() == 0) {
+        if ((app.db().contactsFromDb().size() == 0) || app.db().noFreeContacts()) {
             app.navigate().contacts();
             app.contact().create(new ContactData().withFirstname("Firstname 123").withLastname("Lastname 123"));
         }

@@ -162,4 +162,20 @@ public class DbHelper {
         return c_ids;
     }
 
+    public Boolean noFreeContacts() {
+        List <Integer> c_ids = new ArrayList<>();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        List<ContactData> contacts = session.createQuery( String.format("from ContactData")).list();
+        for (ContactData contact : contacts) {
+            if (contact.getGroups().equals(groupsFromDb())) {
+                Integer c_id = contact.getId();
+                c_ids.add(c_id);
+            }
+        }
+        session.getTransaction().commit();
+        session.close();
+        return c_ids.size() == contactsFromDb().size();
+    }
+
 }
