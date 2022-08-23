@@ -1,4 +1,4 @@
-package am.jtrain.addressbook.web.appManager;
+package am.jtrain.addressbook.web.appmanager;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;

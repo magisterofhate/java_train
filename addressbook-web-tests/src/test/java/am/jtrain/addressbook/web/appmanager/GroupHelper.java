@@ -1,4 +1,4 @@
-package am.jtrain.addressbook.web.appManager;
+package am.jtrain.addressbook.web.appmanager;
 
 import am.jtrain.addressbook.web.model.GroupData;
 import am.jtrain.addressbook.web.model.Groups;

@@ -1,6 +1,6 @@
 package am.jtrain.addressbook.web.tests;
 
-import am.jtrain.addressbook.web.appManager.ApplicationManager;
+import am.jtrain.addressbook.web.appmanager.ApplicationManager;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 
