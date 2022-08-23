@@ -1,0 +1,21 @@
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.testng:testng:7.5'
+    implementation 'org.seleniumhq.selenium:selenium-java:4.4.0'
+    implementation 'org.apache.directory.studio:org.apache.commons.io:2.4'
+    implementation 'org.hamcrest:hamcrest:2.2'
+}
+
+test {
+    useTestNG {
+        suites 'src/test/java/am/jtrain/addressbook/web/resources/testng.xml'
+    }
+    if (project.hasProperty('config')){
+        systemProperty('config', "${config}")
+    }
+}
