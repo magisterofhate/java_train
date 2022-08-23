@@ -146,4 +146,20 @@ public class DbHelper {
         session.close();
         return g_ids;
     }
+
+    public List<Integer> groupContactsFromDb(Integer g_id) {
+        List <Integer> c_ids = new ArrayList<>();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        List<GroupData> result = session.createQuery( String.format("from GroupData where id = %s", g_id)).list();
+        Set<ContactData> contacts = result.get(0).getContacts();
+        for (ContactData contact : contacts) {
+            Integer c_id = contact.getId();
+            c_ids.add(c_id);
+        }
+        session.getTransaction().commit();
+        session.close();
+        return c_ids;
+    }
+
 }
