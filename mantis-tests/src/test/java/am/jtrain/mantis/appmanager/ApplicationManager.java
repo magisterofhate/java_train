@@ -14,10 +14,13 @@ import java.time.Duration;
 import java.util.Properties;
 
 public class ApplicationManager {
-        WebDriver wd;
+    private WebDriver wd;
 
     private final Properties properties;
-    private SessionHelper sessionHelper;
+    private UISessionHelper sessionUI;
+    private AdminHelper adminHelper;
+    private MailHelper mailHelper;
+    private DbHelper dbHelper;
 
     public ApplicationManager() {
         properties = new Properties();
@@ -28,46 +31,77 @@ public class ApplicationManager {
         String config = System.getProperty("config", "local");
         properties.load(new FileReader(String.format("src/test/resources/%s.properties", config)));
 
-        String browser = properties.getProperty("defaultBrowser");
+    }
 
-        switch (browser) {
-            case "CHROME": {
-                ChromeOptions options = new ChromeOptions();
-                options.setHeadless(false);
-                wd = new ChromeDriver(options);
-                break;
+    public void stop() {
+        if (wd != null) {
+            wd.quit();
+        }
+    }
+
+    public UISessionHelper session() {
+        if (sessionUI == null) {
+            sessionUI = new UISessionHelper(this);
+        }
+        return sessionUI;
+    }
+
+    public AdminHelper admin() {
+        if (adminHelper == null) {
+            adminHelper = new AdminHelper(this);
+        }
+        return adminHelper;
+    }
+
+    public MailHelper mail() {
+        if (mailHelper == null) {
+            mailHelper = new MailHelper(this);
+        }
+        return mailHelper;
+    }
+
+    public DbHelper db() {
+        if (dbHelper == null) {
+            dbHelper = new DbHelper(this);
+        }
+        return dbHelper;
+    }
+
+    public String getProperty (String key) {
+        return properties.getProperty(key);
+    }
+
+    public WebDriver getDriver() {
+        if (wd == null) {
+            String browser = properties.getProperty("defaultBrowser");
+
+            switch (browser) {
+                case "CHROME": {
+                    ChromeOptions options = new ChromeOptions();
+                    options.setHeadless(false);
+                    wd = new ChromeDriver(options);
+                    break;
+                }
+                case "FIREFOX": {
+                    FirefoxOptions options = new FirefoxOptions();
+                    options.setBinary("C:\\Program Files\\Mozilla Firefox\\firefox.exe");
+                    wd = new FirefoxDriver(options);
+                    break;
+                }
+                case "EDGE": {
+                    EdgeOptions options = new EdgeOptions();
+                    options.setBinary("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe");
+                    wd = new EdgeDriver(options);
+                    break;
+                }
+                default:
+                    throw new RuntimeException("Incorrect Browser");
             }
-            case "FIREFOX": {
-                FirefoxOptions options = new FirefoxOptions();
-                options.setBinary("C:\\Program Files\\Mozilla Firefox\\firefox.exe");
-                wd = new FirefoxDriver(options);
-                break;
-            }
-            case "EDGE": {
-                EdgeOptions options = new EdgeOptions();
-                options.setBinary("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe");
-                wd = new EdgeDriver(options);
-                break;
-            }
-            default:
-                throw new RuntimeException("Incorrect Browser");
         }
 
         wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
 
-        sessionHelper = new SessionHelper(wd);
-        sessionHelper.login(properties.getProperty("login"),
-                properties.getProperty("password"), properties.getProperty("baseURL"));
-
-    }
-
-    public void stop() {
-        sessionHelper.logout();
-        wd.quit();
-    }
-
-    public SessionHelper session() {
-        return sessionHelper;
+        return wd;
     }
 
 }
