@@ -1,13 +1,14 @@
 package am.jtrain.mantis.tests;
 import am.jtrain.mantis.model.MailMessage;
+import am.jtrain.mantis.model.UserData;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import ru.lanwen.verbalregex.VerbalExpression;
 
-import java.util.List;
+import java.io.IOException;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class PasswordResetTests extends TestBase{
 
@@ -25,8 +26,14 @@ public class PasswordResetTests extends TestBase{
         MailMessage message = app.mail().waitForMail(1, 10000).get(0);
         String link = app.mail().getPasswordResetLink(message);
         app.session().goTo(link);
-        app.session().setPassword("12345");
-        assertEquals(app.session().getCurrentPageUrl(), "http://localhost/mantisbt-2.25.4/manage_user_page.php");
+        String password = "12345";
+        app.session().setPassword(password);
+        String username = app.db().userDataByIdFromDb(2).getUsername();
+        try {
+            assertTrue(app.httpSession().login(username, password));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
