@@ -33,6 +33,7 @@ public class UISessionHelper extends HelperBase{
     public void setPassword (String pwd) {
         enterText(By.name("password"), pwd);
         enterText(By.name("password_confirm"), pwd);
+        clickElement(By.xpath("//button[@type='submit']"));
     }
 
 }

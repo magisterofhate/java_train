@@ -21,6 +21,7 @@ public class ApplicationManager {
     private AdminHelper adminHelper;
     private MailHelper mailHelper;
     private DbHelper dbHelper;
+    private HttpSessionHelper httpSession;
 
     public ApplicationManager() {
         properties = new Properties();
@@ -58,6 +59,13 @@ public class ApplicationManager {
             mailHelper = new MailHelper(this);
         }
         return mailHelper;
+    }
+
+    public HttpSessionHelper httpSession() {
+        if (httpSession == null) {
+            httpSession = new HttpSessionHelper(this);
+        }
+        return httpSession;
     }
 
     public DbHelper db() {
