@@ -39,13 +39,8 @@ public class ContactGroupActionsTests extends TestBase {
     public void testAddContactToGroup() {
         app.navigate().contacts();
 
-        Integer rnd_group = app.db().rndGroupIdFromDb();
-        Integer rnd_contact = app.contact().chooseRandomElement();
-
-        while (app.db().groupContactsFromDb(rnd_group).contains(rnd_contact)) {
-            rnd_group = app.db().rndGroupIdFromDb();
-            rnd_contact = app.contact().chooseRandomElement();
-        }
+        Integer rnd_contact = app.db().rndFreeContact();
+        Integer rnd_group = app.db().groupIdForFreeContact(rnd_contact);
 
         app.contact().addToGroup(rnd_contact, rnd_group);
 
