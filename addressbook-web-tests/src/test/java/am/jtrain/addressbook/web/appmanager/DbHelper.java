@@ -10,11 +10,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.query.Query;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class DbHelper {
@@ -61,6 +59,26 @@ public class DbHelper {
 
         for (GroupData group : groups) {
             Integer g_id = group.getId();
+            element_ids.add(g_id);
+        }
+
+        Random random_method = new Random();
+        int index = random_method.nextInt(element_ids.size());
+
+        session.getTransaction().commit();
+        session.close();
+
+        return element_ids.get(index);
+    }
+
+    public Integer rndContactIdFromDb() {
+        List <Integer> element_ids = new ArrayList<>();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        List <ContactData> contacts = session.createQuery( "from GroupData").list();
+
+        for (ContactData contact : contacts) {
+            Integer g_id = contact.getId();
             element_ids.add(g_id);
         }
 

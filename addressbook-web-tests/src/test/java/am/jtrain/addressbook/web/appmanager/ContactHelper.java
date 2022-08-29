@@ -30,7 +30,7 @@ public class ContactHelper extends HelperBase {
         clickElement(By.xpath("//a[@href='edit.php']"));
     }
 
-    public void fillContactForm(ContactData contactData) {
+    public void fillContactForm(ContactData contactData, Integer group_id) {
         enterText(By.name("firstname"), contactData.getFirstname());
         enterText(By.name("lastname"), contactData.getLastname());
         enterText(By.name("middlename"), contactData.getMiddlename());
@@ -43,6 +43,13 @@ public class ContactHelper extends HelperBase {
         enterText(By.name("email2"), contactData.getEmail2());
         enterText(By.name("email3"), contactData.getEmail3());
 
+        if (group_id != null) {
+            Select groupList = new Select(wd.findElement(By.name("new_group")));
+            groupList.selectByValue(String.valueOf(group_id));
+        } else {
+            Select groupList = new Select(wd.findElement(By.name("new_group")));
+            groupList.selectByValue("[none]");
+        }
     }
 
     public void submitContactCreation() {
@@ -72,7 +79,7 @@ public class ContactHelper extends HelperBase {
 
     public void create(ContactData c_data) {
         initContactCreation();
-        fillContactForm(c_data);
+        fillContactForm(c_data, null);
         submitContactCreation();
         contactCache = null;
         returnToContactPage();
@@ -80,7 +87,7 @@ public class ContactHelper extends HelperBase {
 
     public void modify(ContactData contact) {
         initContactModification(contact.getId());
-        fillContactForm(contact);
+        fillContactForm(contact, null);
         submitContactModification();
         contactCache = null;
         returnToContactPage();
@@ -122,6 +129,14 @@ public class ContactHelper extends HelperBase {
             contactCache.add(contact);
         }
         return new Contacts(contactCache);
+    }
+
+    public void createContactWithGroup(ContactData contact, Integer group_id) {
+        initContactCreation();
+        fillContactForm(contact, group_id);
+        submitContactCreation();
+        contactCache = null;
+        returnToContactPage();
     }
 
     public ContactData readAllContactDataFromMainPage(Integer c_id) {
@@ -167,8 +182,8 @@ public class ContactHelper extends HelperBase {
 
     public void addToGroup (Integer c_id, Integer g_id) {
         clickElementInList(c_id);
-        Select drpCountry = new Select(wd.findElement(By.name("to_group")));
-        drpCountry.selectByValue(String.valueOf(g_id));
+        Select groupList = new Select(wd.findElement(By.name("to_group")));
+        groupList.selectByValue(String.valueOf(g_id));
         clickElement(By.name("add"));
     }
 

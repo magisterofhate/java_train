@@ -2,6 +2,7 @@ package am.jtrain.addressbook.web.tests;
 
 import am.jtrain.addressbook.web.model.ContactData;
 import am.jtrain.addressbook.web.model.GroupData;
+import org.testng.annotations.BeforeGroups;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -24,14 +25,15 @@ public class ContactGroupActionsTests extends TestBase {
             app.navigate().groups();
             app.group().create(new GroupData().withName("group_1").withHeader("group_test 1").withFooter("group footer 1"));
         }
+    }
 
+    @BeforeGroups("remove_contact")
+    private void checkPreConditions2() {
         if (app.db().groupsWithContacts().size() == 0) {
             app.navigate().contacts();
-            Integer rnd_contact = app.contact().chooseRandomElement();
-
+            ContactData contact = new ContactData().withFirstname("Firstname 123").withLastname("Lastname 123");
             Integer rnd_group = app.db().rndGroupIdFromDb();
-
-            app.contact().addToGroup(rnd_contact, rnd_group);
+            app.contact().createContactWithGroup(contact, rnd_group);
         }
     }
 
@@ -48,7 +50,7 @@ public class ContactGroupActionsTests extends TestBase {
         assertThat(contact_groups_from_db, hasItem(rnd_group));
     }
 
-    @Test
+    @Test(groups = "remove_contact")
     public void testRemoveContactFromGroup() {
         app.navigate().contacts();
         Integer rnd_group_with_contacts = app.db().rndGroupWithContacts();
