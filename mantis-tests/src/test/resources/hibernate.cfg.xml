@@ -36,6 +36,8 @@
 
         <!-- Names the annotated entity class -->
         <mapping class = "am.jtrain.mantis.model.UserData"/>
+        <mapping class = "am.jtrain.mantis.model.Issue"/>
+        <mapping class = "am.jtrain.mantis.model.Project"/>
 
     </session-factory>
 

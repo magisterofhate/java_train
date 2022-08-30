@@ -8,8 +8,10 @@ import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
+import javax.xml.rpc.ServiceException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.time.Duration;
 import java.util.Properties;
 
@@ -22,6 +24,7 @@ public class ApplicationManager {
     private MailHelper mailHelper;
     private DbHelper dbHelper;
     private HttpSessionHelper httpSession;
+    private SoapHelper soapHelper;
 
     public ApplicationManager() {
         properties = new Properties();
@@ -66,6 +69,13 @@ public class ApplicationManager {
             httpSession = new HttpSessionHelper(this);
         }
         return httpSession;
+    }
+
+    public SoapHelper soap() throws MalformedURLException, ServiceException {
+        if (soapHelper == null) {
+            soapHelper = new SoapHelper(this);
+        }
+        return soapHelper;
     }
 
     public DbHelper db() {

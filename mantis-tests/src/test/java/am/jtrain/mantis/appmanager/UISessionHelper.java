@@ -18,7 +18,7 @@ public class UISessionHelper extends HelperBase{
     }
 
     public void logout() {
-        wd.get("http://localhost/mantisbt-2.25.4/logout_page.php");
+        wd.get(app.getProperty("baseURL") + "/logout_page.php");
         waitForElement(By.xpath("//input[@name='username']"), 10);
     }
 

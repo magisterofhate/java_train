@@ -13,6 +13,9 @@ public class UserData {
     @Column
     private Integer id;
 
+    @Column
+    private String username;
+
     public Integer getId() {
         return id;
     }
@@ -30,8 +33,4 @@ public class UserData {
         this.username = username;
         return this;
     }
-
-    @Column
-    private String username;
-
 }
