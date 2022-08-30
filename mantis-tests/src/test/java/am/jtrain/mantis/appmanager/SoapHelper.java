@@ -29,7 +29,7 @@ public class SoapHelper {
         IssueData[] issues_mantis = mc.mc_project_get_issues(app.getProperty("admin_login"), app.getProperty("admin_password"), project_id, null, BigInteger.valueOf(-1));
 
         return Arrays.stream(issues_mantis).map((i) -> new Issue().withId(i.getId().intValue())
-                .withName(i.getSummary())).collect(Collectors.toSet());
+                .withSummary(i.getSummary())).collect(Collectors.toSet());
     }
 
 }

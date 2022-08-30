@@ -28,8 +28,8 @@ public class Issue {
         return summary;
     }
 
-    public Issue withName(String name) {
-        this.summary = name;
+    public Issue withSummary(String summary) {
+        this.summary = summary;
         return this;
     }
 
