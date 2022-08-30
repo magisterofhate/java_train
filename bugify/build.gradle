@@ -15,7 +15,7 @@ dependencies {
 
 test {
     useTestNG {
-        suites 'src/test/java/am/jtrain/addressbook/web/resources/testng.xml'
+        suites 'src/test/resources/testng.xml'
     }
     if (project.hasProperty('config')){
         systemProperty('config', "${config}")

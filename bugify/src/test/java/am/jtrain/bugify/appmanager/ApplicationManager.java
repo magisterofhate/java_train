@@ -1,6 +1,4 @@
-package am.jtrain.mantis.appmanager;
-
-import io.restassured.RestAssured;
+package am.jtrain.bugify.appmanager;
 
 import java.io.FileReader;
 import java.io.IOException;

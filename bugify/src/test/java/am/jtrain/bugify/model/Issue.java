@@ -1,4 +1,4 @@
-package am.jtrain.mantis.model;
+package am.jtrain.bugify.model;
 
 import java.util.Objects;
 

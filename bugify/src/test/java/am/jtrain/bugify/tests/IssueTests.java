@@ -1,6 +1,6 @@
-package am.jtrain.mantis.tests;
+package am.jtrain.bugify.tests;
 
-import am.jtrain.mantis.model.Issue;
+import am.jtrain.bugify.model.Issue;
 import io.restassured.RestAssured;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;

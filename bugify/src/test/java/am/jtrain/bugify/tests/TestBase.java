@@ -1,7 +1,7 @@
-package am.jtrain.mantis.tests;
+package am.jtrain.bugify.tests;
 
-import am.jtrain.mantis.appmanager.ApplicationManager;
-import am.jtrain.mantis.model.Issue;
+import am.jtrain.bugify.appmanager.ApplicationManager;
+import am.jtrain.bugify.model.Issue;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
