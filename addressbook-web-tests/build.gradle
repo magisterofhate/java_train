@@ -19,7 +19,7 @@ dependencies {
 
 task testContacts(type: Test) {
     useTestNG {
-        suites 'src/test/java/am/jtrain/addressbook/web/resources/test-contacts.xml'
+        suites 'src/test/resources/test-contacts.xml'
     }
     if (project.hasProperty('config')){
         systemProperty('config', "${config}")
@@ -28,7 +28,7 @@ task testContacts(type: Test) {
 
 task testGroups(type: Test) {
     useTestNG {
-        suites 'src/test/java/am/jtrain/addressbook/web/resources/test-groups.xml'
+        suites 'src/test/java/test-groups.xml'
     }
     if (project.hasProperty('config')){
         systemProperty('config', "${config}")

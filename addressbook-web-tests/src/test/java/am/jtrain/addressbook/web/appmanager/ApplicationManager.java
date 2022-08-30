@@ -7,9 +7,12 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
 import java.time.Duration;
 import java.util.Properties;
 
@@ -36,27 +39,33 @@ public class ApplicationManager {
 
         String browser = properties.getProperty("defaultBrowser");
 
-        switch (browser) {
-            case "CHROME": {
-                ChromeOptions options = new ChromeOptions();
-                options.setHeadless(false);
-                wd = new ChromeDriver(options);
-                break;
+        if ("".equals(properties.getProperty("selenium_server"))) {
+            switch (browser) {
+                case "CHROME": {
+                    ChromeOptions options = new ChromeOptions();
+                    options.setHeadless(false);
+                    wd = new ChromeDriver(options);
+                    break;
+                }
+                case "FIREFOX": {
+                    FirefoxOptions options = new FirefoxOptions();
+                    options.setBinary("C:\\Program Files\\Mozilla Firefox\\firefox.exe");
+                    wd = new FirefoxDriver(options);
+                    break;
+                }
+                case "EDGE": {
+                    EdgeOptions options = new EdgeOptions();
+                    options.setBinary("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe");
+                    wd = new EdgeDriver(options);
+                    break;
+                }
+                default:
+                    throw new RuntimeException("Incorrect Browser");
             }
-            case "FIREFOX": {
-                FirefoxOptions options = new FirefoxOptions();
-                options.setBinary("C:\\Program Files\\Mozilla Firefox\\firefox.exe");
-                wd = new FirefoxDriver(options);
-                break;
-            }
-            case "EDGE": {
-                EdgeOptions options = new EdgeOptions();
-                options.setBinary("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe");
-                wd = new EdgeDriver(options);
-                break;
-            }
-            default:
-                throw new RuntimeException("Incorrect Browser");
+        } else {
+            DesiredCapabilities capabilities = new DesiredCapabilities();
+            capabilities.setBrowserName(browser);
+            wd = new RemoteWebDriver(new URL(properties.getProperty("selenium_server")), capabilities);
         }
 
         wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
