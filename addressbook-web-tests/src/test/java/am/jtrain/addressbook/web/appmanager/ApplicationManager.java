@@ -33,7 +33,7 @@ public class ApplicationManager {
 
     public void init() throws IOException {
 
-        String config = System.getProperty("config", "remote");
+        String config = System.getProperty("config", "local");
         properties.load(new FileReader(String.format("src/test/resources/%s.properties", config)));
 
         dbHelper = new DbHelper();

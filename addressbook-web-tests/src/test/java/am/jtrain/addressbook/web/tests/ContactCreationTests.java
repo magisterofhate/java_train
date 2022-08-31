@@ -34,7 +34,7 @@ public class ContactCreationTests extends TestBase {
         return contacts.stream().map((c) -> new Object[] {c}).collect(Collectors.toList()).iterator();
     }
 
-    @Test (enabled = false, dataProvider = "contactsFromJson")
+    @Test (dataProvider = "contactsFromJson")
     public void testContactCreation(ContactData contact) {
         app.navigate().contacts();
         Contacts before_list = app.db().contactsFromDb();
