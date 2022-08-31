@@ -34,3 +34,12 @@ task testGroups(type: Test) {
         systemProperty('config', "${config}")
     }
 }
+
+task testAll(type: Test) {
+    useTestNG {
+        suites 'src/test/java/test-all.xml'
+    }
+    if (project.hasProperty('config')){
+        systemProperty('config', "${config}")
+    }
+}
