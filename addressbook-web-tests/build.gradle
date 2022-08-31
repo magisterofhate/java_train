@@ -28,7 +28,7 @@ task testContacts(type: Test) {
 
 task testGroups(type: Test) {
     useTestNG {
-        suites 'src/test/java/test-groups.xml'
+        suites 'src/test/resources/test-groups.xml'
     }
     if (project.hasProperty('config')){
         systemProperty('config', "${config}")
@@ -37,7 +37,7 @@ task testGroups(type: Test) {
 
 task testAll(type: Test) {
     useTestNG {
-        suites 'src/test/java/test-all.xml'
+        suites 'src/test/resources/test-all.xml'
     }
     if (project.hasProperty('config')){
         systemProperty('config', "${config}")
