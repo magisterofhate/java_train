@@ -30,7 +30,7 @@ public class ContactHelper extends HelperBase {
         clickElement(By.xpath("//a[@href='edit.php']"));
     }
 
-    public void fillContactForm(ContactData contactData, Integer group_id) {
+    public void fillContactFormWithGroup(ContactData contactData, Integer group_id) {
         enterText(By.name("firstname"), contactData.getFirstname());
         enterText(By.name("lastname"), contactData.getLastname());
         enterText(By.name("middlename"), contactData.getMiddlename());
@@ -50,6 +50,20 @@ public class ContactHelper extends HelperBase {
             Select groupList = new Select(wd.findElement(By.name("new_group")));
             groupList.selectByValue("[none]");
         }
+    }
+
+    public void fillContactForm(ContactData contactData) {
+        enterText(By.name("firstname"), contactData.getFirstname());
+        enterText(By.name("lastname"), contactData.getLastname());
+        enterText(By.name("middlename"), contactData.getMiddlename());
+        enterText(By.name("address"), contactData.getAddress());
+        enterText(By.name("home"), contactData.getHome());
+        enterText(By.name("mobile"), contactData.getMobile());
+        enterText(By.name("work"), contactData.getWork());
+        enterText(By.name("phone2"), contactData.getPhone2());
+        enterText(By.name("email"), contactData.getEmail());
+        enterText(By.name("email2"), contactData.getEmail2());
+        enterText(By.name("email3"), contactData.getEmail3());
     }
 
     public void submitContactCreation() {
@@ -79,7 +93,7 @@ public class ContactHelper extends HelperBase {
 
     public void create(ContactData c_data) {
         initContactCreation();
-        fillContactForm(c_data, null);
+        fillContactFormWithGroup(c_data, null);
         submitContactCreation();
         contactCache = null;
         returnToContactPage();
@@ -87,7 +101,7 @@ public class ContactHelper extends HelperBase {
 
     public void modify(ContactData contact) {
         initContactModification(contact.getId());
-        fillContactForm(contact, null);
+        fillContactForm(contact);
         submitContactModification();
         contactCache = null;
         returnToContactPage();
@@ -133,7 +147,7 @@ public class ContactHelper extends HelperBase {
 
     public void createContactWithGroup(ContactData contact, Integer group_id) {
         initContactCreation();
-        fillContactForm(contact, group_id);
+        fillContactFormWithGroup(contact, group_id);
         submitContactCreation();
         contactCache = null;
         returnToContactPage();

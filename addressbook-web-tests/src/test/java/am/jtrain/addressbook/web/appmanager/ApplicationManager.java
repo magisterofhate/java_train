@@ -7,6 +7,7 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -32,7 +33,7 @@ public class ApplicationManager {
 
     public void init() throws IOException {
 
-        String config = System.getProperty("config", "local");
+        String config = System.getProperty("config", "remote");
         properties.load(new FileReader(String.format("src/test/resources/%s.properties", config)));
 
         dbHelper = new DbHelper();
@@ -41,19 +42,19 @@ public class ApplicationManager {
 
         if ("".equals(properties.getProperty("selenium_server"))) {
             switch (browser) {
-                case "CHROME": {
+                case "chrome": {
                     ChromeOptions options = new ChromeOptions();
                     options.setHeadless(false);
                     wd = new ChromeDriver(options);
                     break;
                 }
-                case "FIREFOX": {
+                case "firefox": {
                     FirefoxOptions options = new FirefoxOptions();
                     options.setBinary("C:\\Program Files\\Mozilla Firefox\\firefox.exe");
                     wd = new FirefoxDriver(options);
                     break;
                 }
-                case "EDGE": {
+                case "Edge": {
                     EdgeOptions options = new EdgeOptions();
                     options.setBinary("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe");
                     wd = new EdgeDriver(options);
@@ -63,8 +64,12 @@ public class ApplicationManager {
                     throw new RuntimeException("Incorrect Browser");
             }
         } else {
+
+
             DesiredCapabilities capabilities = new DesiredCapabilities();
-            capabilities.setBrowserName(browser);
+            capabilities.setCapability(CapabilityType.BROWSER_NAME, browser);
+
+            //capabilities.setBrowserName(browser);
             wd = new RemoteWebDriver(new URL(properties.getProperty("selenium_server")), capabilities);
         }
 
